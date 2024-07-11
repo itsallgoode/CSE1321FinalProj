@@ -1,107 +1,82 @@
 import pygame
-import sys
 import random
+import sys
 
-
+# Initialize Pygame
 pygame.init()
 
-
-width, height = 640, 480
-player_size = 20
-finish_size = 10
-obstacle_size = 50
-timer = 30
-
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-YELLOW = (255, 255, 0)
-BLUE = (0, 0, 255)
-
-
+# Screen dimensions
+width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
 
+# Colors and constants
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+BLUE = (0, 0, 255)
+PLAYER_SIZE = 50
+OBSTACLE_WIDTH = 60
+OBSTACLE_HEIGHT = 30
+OBSTACLE_SPEED = 4  # Uniform speed for all obstacles
+NUM_LANES = 4  # Reduced to 4 to keep the bottom of the screen clear
+LANE_HEIGHT = (height - PLAYER_SIZE) // NUM_LANES
 
-font = pygame.font.Font(None, 36)
+# Player setup
+player = pygame.Rect(width // 2, height - PLAYER_SIZE, PLAYER_SIZE, PLAYER_SIZE)
 
+# Obstacle setup
+obstacles = []
 
-player = pygame.Rect((width / 2) - player_size, height - player_size * 2, player_size, player_size)
-finish = pygame.Rect(0, 0, width, finish_size)  #(x,y,w,l)
+def add_obstacle():
+    lane = random.randint(0, NUM_LANES - 1)
+    y_position = lane * LANE_HEIGHT + (LANE_HEIGHT - OBSTACLE_HEIGHT) // 2
+    new_obstacle = pygame.Rect(width, y_position, OBSTACLE_WIDTH, OBSTACLE_HEIGHT)
+    obstacles.append(new_obstacle)
 
-obstacles = [
-    pygame.Rect(-obstacle_size, random.randint(0, height - obstacle_size), obstacle_size, obstacle_size),
-    pygame.Rect(width-obstacle_size, random.randint(0, height - obstacle_size), obstacle_size, obstacle_size),
-    pygame.Rect(width-obstacle_size, random.randint(0, height - obstacle_size), obstacle_size, obstacle_size),
-    pygame.Rect(-obstacle_size, random.randint(0, height - obstacle_size), obstacle_size, obstacle_size),
-]
-
+# Game loop
+running = True
 clock = pygame.time.Clock()
 
-while True:
+while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
+            running = False
 
+    # Player movement
     keys = pygame.key.get_pressed()
-
-#player movement
-    if keys[pygame.K_LEFT]:
+    if keys[pygame.K_LEFT] and player.left > 0:
         player.x -= 5
-    if keys[pygame.K_RIGHT]:
+    if keys[pygame.K_RIGHT] and player.right < width:
         player.x += 5
-    if keys[pygame.K_UP]:
+    if keys[pygame.K_UP] and player.top > 0:
         player.y -= 5
-    if keys[pygame.K_DOWN]:
+    if keys[pygame.K_DOWN] and player.bottom < height:
         player.y += 5
 
-    for obstacle in obstacles:
-        if obstacle.x < 0:
-            obstacle.x = width
-        elif obstacle.x > width:
-            obstacle.x = -obstacle_size
-        obstacle.x -= 2 if obstacle == obstacles[2] else 2
+    # Add new obstacle randomly, with varying spawn rate
+    if random.randint(0, 100) > 95:  # Adjust spawn rate probability here
+        add_obstacle()
 
+    # Update obstacle positions
+    for i in range(len(obstacles) - 1, -1, -1):
+        obstacles[i].x -= OBSTACLE_SPEED
+        if obstacles[i].right < 0:
+            obstacles.pop(i)
 
-    if player.colliderect(finish):
-        screen.fill(WHITE)  #Enter you_win background surface"
-                            #"play sound" channel.play(win_sound) - referencing var (win_sound)
-        text = font.render("You win!", True, (0, 0, 0))
-        screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        pygame.quit()
-        sys.exit()
-
+    # Check for collisions
     for obstacle in obstacles:
         if player.colliderect(obstacle):
-            screen.fill(WHITE)  #"Enter game_over surface"
-                                 #"Play sound"  channel.play(dead sound) - referencing variable(dead_sound)
-            text = font.render("Game over", True, (0, 0, 0))  #aliasing makes font smooth
-            screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
-            pygame.display.flip()
-            pygame.time.wait(2000)
-            pygame.quit()
-            sys.exit()
+            print("Collision detected!")
+            running = False
 
-
-    timer -= 1 / 60
-    if timer <= 0:
-        screen.fill(WHITE)
-        text = font.render("Game over", True, (0, 0, 0))
-        screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
-        pygame.display.flip()
-        pygame.time.wait(2000)
-        pygame.quit()
-        sys.exit()
-
-
+    # Drawing
     screen.fill(WHITE)
-    pygame.draw.rect(screen, BLUE, player)
-    pygame.draw.rect(screen, YELLOW, finish)
+    pygame.draw.rect(screen, RED, player)
     for obstacle in obstacles:
-        pygame.draw.rect(screen, (0, 0, 0), obstacle)
-    text = font.render(f"Time: {int(timer)}", True, (0, 0, 0))
-    screen.blit(text, (10, 10))
-    pygame.display.flip()
+        pygame.draw.rect(screen, BLUE, obstacle)  # Draw obstacles as blue rectangles
 
+    pygame.display.flip()
     clock.tick(60)
+
+pygame.quit()
+sys.exit()
+
