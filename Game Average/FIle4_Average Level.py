@@ -25,18 +25,18 @@ safe_area_height = 100
 middle_height = height - 2 * safe_area_height
 lanes = 3
 lane_height = obstacle_height + 25
-cars = 50 #(0-100)lower number to increase the chance of adding an obstacle
+cars = 95 #(0-100)lower number to increase the chance of adding an obstacle
 
 #music
 background_music = pygame.mixer.Sound('File 4 music.mp3')
 channel = pygame.mixer.Channel(0)
 
 #images
-game_image = pygame.image.load('interstate.png')
+game_image = pygame.image.load('interstate.png').convert_alpha()
 game_image = pygame.transform.scale(game_image, (width, height))
-green_car = pygame.image.load('green_car.png')
+green_car = pygame.image.load('green_car.png').convert_alpha()
 green_car = pygame.transform.scale(green_car, (100, obstacle_height))
-orange_car = pygame.image.load('orange_car.png')
+orange_car = pygame.image.load('orange_car.png').convert_alpha()
 orange_car = pygame.transform.scale(orange_car, (100, obstacle_height))
 
 vehicles = [green_car, orange_car]
@@ -115,11 +115,11 @@ while running:
             obstacles_left.remove(obstacle)
             obstacle_images.pop(0)
 
-    for obstacle, image in zip(obstacles_right, obstacle_images[:len(obstacles_left)]):
+    for obstacle, image in zip(obstacles_right, obstacle_images[:len(obstacles_right)]):
         obstacle.x += obstacle_speed
         if obstacle.right > 1000 + obstacle_width:
             obstacles_right.remove(obstacle)
-            obstacle_images.pop(len(obstacles_left))
+            obstacle_images.pop(len(obstacles_right))
 
     if any(player.colliderect(obstacle) for obstacle in obstacles_left) or any(player.colliderect(obstacle) for obstacle in obstacles_right):
         screen.fill(black)
