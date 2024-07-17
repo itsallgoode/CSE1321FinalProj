@@ -1,0 +1,8 @@
+#Sprites images
+#https://www.google.com/search?q=beach+sprite+shee+png&sca_esv=ae712cb3575662e5&sca_upv=1&udm=2&hl=en&biw=1536&bih=695&sxsrf=ADLYWIJrpqTq5SweAPBrCKTC9tt6QnyDkA%3A1721147531283&ei=i6CWZsL3EJvFp84PmJaf-Ag&ved=0ahUKEwiC6dSZ_quHAxWb4skDHRjLB48Q4dUDCBA&uact=5&oq=beach+sprite+shee+png&gs_lp=Egxnd3Mtd2l6LXNlcnAiFWJlYWNoIHNwcml0ZSBzaGVlIHBuZ0icLFAAWLUpcAd4AJABAZgBpAKgAaEIqgEGMTAuMS4xuAEDyAEA-AEBmAIAoAIAmAMA4gMFEgExIECSBwCgB5wE&sclient=gws-wiz-serp#vhid=XQha5B7XS_RTzM&vssid=mosaic
+#https://schwarnhild.itch.io/basic-beach-tileset
+#https://www.google.com/search?q=boat+sprite+sheet+png&sca_esv=ae712cb3575662e5&sca_upv=1&udm=2&hl=en&biw=1920&bih=911&sxsrf=ADLYWILXgZJg19qHZgMXxZJwWDqhZ7JnmQ%3A1721173949748&ei=vQeXZsKtLf21wN4PtNiS4AE&ved=0ahUKEwiCgPzO4KyHAxX9GtAFHTSsBBwQ4dUDCBA&uact=5&oq=boat+sprite+sheet+png&gs_lp=Egxnd3Mtd2l6LXNlcnAiFWJvYXQgc3ByaXRlIHNoZWV0IHBuZzIEECMYJ0j4DVDjC1jjC3ABeACQAQCYAUWgAUWqAQExuAEDyAEA-AEBmAIBoAJImAMA4gMFEgExIECIBgGSBwExoAf6AQ&sclient=gws-wiz-serp#vhid=RppI9B_XgI2QNM&vssid=mosaic
+#https://www.google.com/search?sca_esv=ae712cb3575662e5&sca_upv=1&hl=en&sxsrf=ADLYWIK81B5-mz0futivZPUc8cnRJg1TCQ:1721174124159&q=tilemap+water+tiles+png&uds=ADvngMhx89yEWZcQB0O-zCNUubAXP87qNyJQZ_L0d5M4iGOx2t50sgpy3ZyNydABS8z4Y67ROBGF2JjyizLNgtJWRss8fkA5Iu69I5uMNkJRBe7OvmZ00eXpW6hmcR6NkXUYoBSRXP6u-Cy6Q0rjk04IIPTZZ3RkAA&udm=2&sa=X&ved=2ahUKEwjJlpGi4ayHAxUPHNAFHbMuD30QxKsJegUIjwEQAQ&ictx=0&biw=1536&bih=695&dpr=1
+
+#Music
+#https://github.com/russs123/Platformer/blob/master/Part_12-Moving_Platforms/platformer_tut12.py

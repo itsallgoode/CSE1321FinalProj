@@ -1,27 +1,29 @@
 import pygame
-from pygame.locals import *
+#from pygame.locals import *
 import random
 import sys
-from pygame import mixer
+
+#from pygame import mixer
 
 pygame.init()
 
-width, height = 1000, 1000
+width, height = 1000, 750
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Space Invaders')
+pygame.display.set_caption('Crossing')
 
 #color variables
 white = (255, 255, 255)
 red = (255, 0, 0)
-blue = (0, 0, 255)
+blue = (25, 189, 255)
 green = (0, 255, 0)
 gray = (200, 200, 200)
 black = (0, 0, 0)
+yellow = (255, 189, 25)
 
 #game variables
-player_size = 50
-obstacle_width = 90
-obstacle_height = 70
+player_size = 30
+obstacle_width = 100
+obstacle_height = 50
 obstacle_speed = 6
 safe_area_height = 100
 middle_height = height - 2 * safe_area_height
@@ -29,8 +31,8 @@ lanes = 3
 lane_height = middle_height // lanes
 
 #fonts
-font30 = pygame.font.SysFont('Constantia', 30)
 font40 = pygame.font.SysFont('Constantia', 40)
+font50 = pygame.font.SysFont('Constantia', 50)
 
 #time
 clock = pygame.time.Clock()
@@ -46,39 +48,39 @@ middle_area = pygame.Rect(0, safe_area_height, width, middle_height)
 #Images
 #character images
 playerReady_img = pygame.image.load("swimmerready.png").convert_alpha()
-playerReady_img = pygame.transform.scale(playerReady_img, (40, 40))
+playerReady_img = pygame.transform.scale(playerReady_img, (20, 30))
 playerSwim_img = pygame.image.load("swimming.png").convert_alpha()
-playerSwim_img = pygame.transform.scale(playerSwim_img, (40, 40))
+playerSwim_img = pygame.transform.scale(playerSwim_img, (25, 25))
 playerLeft_img = pygame.image.load("swimmerleft.png").convert_alpha()
-playerLeft_img = pygame.transform.scale(playerLeft_img, (40, 40))
+playerLeft_img = pygame.transform.scale(playerLeft_img, (25, 25))
 playerRight_img = pygame.image.load("swimmerright.png").convert_alpha()
-playerRight_img = pygame.transform.scale(playerRight_img, (40, 40))
+playerRight_img = pygame.transform.scale(playerRight_img, (25, 25))
 playerBack_img = pygame.image.load("swimmerback.png").convert_alpha()
-playerBack_img = pygame.transform.scale(playerBack_img, (40, 40))
+playerBack_img = pygame.transform.scale(playerBack_img, (25, 25))
 #playerLost_img = pygame.image.load("swimmerlost.png").convert_alpha()
 #playerLost_img = pygame.transform.scale(playerLost_img, (40, 40))
 
 #background images
-water_img = pygame.image.load("Water.png").convert()
-water_img = pygame.transform.scale(water_img, (1000, 1000))
-sandTop_img = pygame.image.load('Topbeach.png')
+water_img = pygame.image.load("Water.png").convert_alpha()
+water_img = pygame.transform.scale(water_img, (width, height))
+sandTop_img = pygame.image.load('Topbeach.png').convert_alpha()
 sandTop_img = pygame.transform.scale(sandTop_img, (width, safe_area_height - 20))
-sandBottom_img = pygame.image.load('Bottombeach.png')
+sandBottom_img = pygame.image.load('Bottombeach.png').convert_alpha()
 sandBottom_img = pygame.transform.scale(sandBottom_img, (width, safe_area_height))
-palmtree_img = pygame.image.load('Palmtree.png')
+palmtree_img = pygame.image.load('Palmtree.png').convert_alpha()
 palmtree_img = pygame.transform.scale(palmtree_img, (50, 50))
 dock_img = pygame.image.load('dock.png')
 dockFlip_img = pygame.image.load('Dockflip.png')
 
 #object images
 barrel_img = pygame.image.load('barrel.png').convert_alpha()
-barrel_img = pygame.transform.scale(barrel_img, (60, 60))
+barrel_img = pygame.transform.scale(barrel_img, (50, 50))
 wood_img = pygame.image.load('floatingwood.png').convert_alpha()
-wood_img = pygame.transform.scale(wood_img, (100, 60))
+wood_img = pygame.transform.scale(wood_img, (80, 40))
 ship1_img = pygame.image.load('boat1.png').convert_alpha()
-ship1_img = pygame.transform.scale(ship1_img, (120, 80))
+ship1_img = pygame.transform.scale(ship1_img, (110, 60))
 ship2_img = pygame.image.load('boat2.png').convert_alpha()
-ship2_img = pygame.transform.scale(ship2_img, (120, 80))
+ship2_img = pygame.transform.scale(ship2_img, (110, 60))
 buoy_img = pygame.image.load('buoy.png').convert_alpha()
 buoy_img = pygame.transform.scale(buoy_img, (50, 70))
 
@@ -113,15 +115,10 @@ objects = [wood_img, barrel_img, ship1_img, buoy_img, ship2_img]
 # randomly selects a lane and calculates the position for a new obstacle
 def add_obstacle():
     lane = random.randint(0, lanes - 1)
-    y_position_one = (safe_area_height - 100 + lane * lane_height + lane_height) + 10
+    y_position_one = (safe_area_height - 95 + lane * lane_height + lane_height) + 20
     new_obstacle = pygame.Rect(width, y_position_one, obstacle_width, obstacle_height)
-
-    y_position_two = ((middle_height / 2 + 80) + lane * lane_height + lane_height) + 10
-    new_obstacle_two = pygame.Rect(0 - obstacle_width, y_position_two, obstacle_width, obstacle_height)
-
     # keeps the obstacles from overlapping
-    overlap = any(new_obstacle.colliderect(obstacle) for obstacle in obstacles_left) or any(
-        new_obstacle_two.colliderect(obstacle) for obstacle in obstacles_right)
+    overlap = any(new_obstacle.colliderect(obstacle) for obstacle in obstacles_left)
     if not overlap:
         obstacles_left.append(new_obstacle)
         obstacle_images.append(random.choice(objects))
@@ -148,22 +145,21 @@ while running:
 
         #win collision
         if player.colliderect(top_safe_area):
-            screen.fill(white)  # "Enter game_over surface"
+            screen.fill(blue)  # "Enter game_over surface"
             win_fx.play()
-            text = font40.render("YOU WIN!", True, green)
+            text = font50.render("YOU WIN!", True, yellow)
             screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
             pygame.display.flip()
             pygame.time.wait(3000)
             running = False
 
+        if random.randint(0, 100) > 96:  # lower number to increase the chance of adding an obstacle
+            add_obstacle()
         #obstacle direction/random
         for obstacle in obstacles:
             obstacle.x -= obstacle_speed
             if obstacle.right < 0:
                 obstacles.remove(obstacle)
-
-        if random.randint(0, 100) > 96:  # lower number to increase the chance of adding an obstacle
-            add_obstacle()
 
         for obstacle, image in zip(obstacles_left, obstacle_images[:len(obstacles_left)]):
             obstacle.x -= obstacle_speed
@@ -176,28 +172,31 @@ while running:
             if obstacle.right > 1000 + obstacle_width:
                 obstacles_right.remove(obstacle)
                 obstacle_images.pop(len(obstacles_left))
-
+        direction = 0
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and player.left > 0:
-            player_surf = playerLeft_img
             player.x -= 5
+            direction = 1
+            player_surf = playerLeft_img
         if keys[pygame.K_RIGHT] and player.right < width:
             player_surf = playerRight_img
+            direction = -1
             player.x += 5
         if keys[pygame.K_UP] and player.top > 0:
             player_surf = playerSwim_img
             player.y -= 5
+            direction = 2
         if keys[pygame.K_DOWN] and player.bottom < width:
             player_surf = playerBack_img
+            direction = -2
             player.y += 5
-        #collision
 
+        #collision
         if any(player.colliderect(obstacle) for obstacle in obstacles_left) or any(
                 player.colliderect(obstacle) for obstacle in obstacles_right):
-            screen.fill(white)
+            screen.fill(black)
             game_over.play()
-            #screen.blit(playerLost_img, (500, 500))
-            text = font40.render("GAME OVER", True, red)
+            text = font50.render("GAME OVER", True, red)
             screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
             pygame.display.flip()
             pygame.time.wait(3000)
@@ -219,11 +218,11 @@ while running:
     screen.blit(palmtree_img, (750, 0))
     screen.blit(palmtree_img, (130, 15))
     #bottom blit
-    screen.blit(sandBottom_img, (0, 920))
-    screen.blit(dockFlip_img, (470, 900))
-    screen.blit(palmtree_img, (345, 905))
-    screen.blit(palmtree_img, (645, 925))
-    screen.blit(palmtree_img, (145, 925))
+    screen.blit(sandBottom_img, (0, 680))
+    screen.blit(dockFlip_img, (470, 650))
+    screen.blit(palmtree_img, (345, 695))
+    screen.blit(palmtree_img, (645, 690))
+    screen.blit(palmtree_img, (145, 660))
     #obsticle blit
     for obstacle, image in zip(obstacles_left, obstacle_images):
         screen.blit(image, obstacle)
@@ -233,7 +232,7 @@ while running:
     screen.blit(player_surf, player)
 
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(55)
     previous_time = clock.get_time()
     fps = clock.get_fps()
 
