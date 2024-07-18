@@ -14,7 +14,7 @@ pygame.display.set_caption('Crossing')
 #color variables
 white = (255, 255, 255)
 red = (255, 0, 0)
-blue = (25, 189, 255)
+blue = (15, 97, 99)
 green = (0, 255, 0)
 gray = (200, 200, 200)
 black = (0, 0, 0)
@@ -22,7 +22,7 @@ yellow = (255, 189, 25)
 
 #game variables
 player_size = 30
-obstacle_width = 100
+obstacle_width = 85
 obstacle_height = 50
 obstacle_speed = 6
 safe_area_height = 100
@@ -31,6 +31,7 @@ lanes = 3
 lane_height = middle_height // lanes
 
 #fonts
+font30 = pygame.font.SysFont('Constantia', 30)
 font40 = pygame.font.SysFont('Constantia', 40)
 font50 = pygame.font.SysFont('Constantia', 50)
 
@@ -39,6 +40,8 @@ clock = pygame.time.Clock()
 fps = 60
 countdown = 3
 last_count = pygame.time.get_ticks()
+timer = 30
+
 
 #endges/safety
 top_safe_area = pygame.Rect(0, 0, width, safe_area_height)
@@ -155,6 +158,7 @@ while running:
 
         if random.randint(0, 100) > 96:  # lower number to increase the chance of adding an obstacle
             add_obstacle()
+
         #obstacle direction/random
         for obstacle in obstacles:
             obstacle.x -= obstacle_speed
@@ -171,25 +175,32 @@ while running:
             obstacle.x += obstacle_speed
             if obstacle.right > 1000 + obstacle_width:
                 obstacles_right.remove(obstacle)
-                obstacle_images.pop(len(obstacles_left))
-        direction = 0
+                obstacle_images.pop(0)
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and player.left > 0:
             player.x -= 5
-            direction = 1
             player_surf = playerLeft_img
         if keys[pygame.K_RIGHT] and player.right < width:
             player_surf = playerRight_img
-            direction = -1
             player.x += 5
         if keys[pygame.K_UP] and player.top > 0:
             player_surf = playerSwim_img
             player.y -= 5
-            direction = 2
         if keys[pygame.K_DOWN] and player.bottom < width:
             player_surf = playerBack_img
-            direction = -2
             player.y += 5
+
+        #if times runs out they lose
+        timer -= 1 / 60
+        if timer <= 0:
+            screen.fill(black)
+            game_over.play()
+            text = font50.render("GAME OVER", True, red)
+            screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
+            pygame.display.flip()
+            pygame.time.wait(3000)
+            running = False  # kills the game if you hit an obstacle
 
         #collision
         if any(player.colliderect(obstacle) for obstacle in obstacles_left) or any(
@@ -230,9 +241,10 @@ while running:
         screen.blit(image, obstacle)
     #player blit
     screen.blit(player_surf, player)
-
+    text = font30.render(f"Time: {int(timer)}", True, (0, 0, 0))
+    screen.blit(text, (10, 10))
     pygame.display.update()
-    clock.tick(55)
+    clock.tick(60)
     previous_time = clock.get_time()
     fps = clock.get_fps()
 
