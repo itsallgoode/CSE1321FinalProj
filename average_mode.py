@@ -28,15 +28,15 @@ lane_height = obstacle_height + 25
 cars = 95 #(0-100)lower number to increase the chance of adding an obstacle
 
 #music
-background_music = pygame.mixer.Sound('File 4 music.mp3')
+background_music = pygame.mixer.Sound('music/File 4 music.mp3')
 channel = pygame.mixer.Channel(0)
 
 #images
-game_image = pygame.image.load('interstate.png').convert_alpha()
+game_image = pygame.image.load('images/interstate.png').convert_alpha()
 game_image = pygame.transform.scale(game_image, (width, height))
-green_car = pygame.image.load('green_car.png').convert_alpha()
+green_car = pygame.image.load('images/green_car.png').convert_alpha()
 green_car = pygame.transform.scale(green_car, (100, obstacle_height))
-orange_car = pygame.image.load('orange_car.png').convert_alpha()
+orange_car = pygame.image.load('images/orange_car.png').convert_alpha()
 orange_car = pygame.transform.scale(orange_car, (100, obstacle_height))
 
 vehicles = [green_car, orange_car]
