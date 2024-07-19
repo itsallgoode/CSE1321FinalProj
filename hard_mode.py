@@ -22,12 +22,19 @@ middle_height = height - 2 * safe_area_height
 lanes = 6
 lane_height = middle_height // lanes
 
- 
-
+font50 = pygame.font.SysFont('Constantia', 50)
+timer = 15
 top_safe_area = pygame.Rect(0, 0, width, safe_area_height)
 bottom_safe_area = pygame.Rect(0, height - safe_area_height, width, safe_area_height)
 middle_area = pygame.Rect(0, safe_area_height, width, middle_height)
 
+#sound
+pygame.mixer.music.load('music/music.wav')
+pygame.mixer.music.play(-1, 0.0, 5000)
+game_over = pygame.mixer.Sound('music/game_over.wav')
+game_over.set_volume(0.5)
+win_fx = pygame.mixer.Sound('music/win.mp3')
+win_fx.set_volume(0.5)
 
 #images
 full_image = pygame.image.load('images/road.jpg')
@@ -62,23 +69,28 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-
     keys = pygame.key.get_pressed()
-
     if keys[pygame.K_LEFT] and player.left > 0:
         player.x -= 5
-
     if keys[pygame.K_RIGHT] and player.right < width:
         player.x += 5
-
     if keys[pygame.K_UP] and player.top > 0:
         player.y -= 5
-
     if keys[pygame.K_DOWN] and player.bottom < height:
         player.y += 5
 
+    # Timer decrement and check
+    timer -= 1 / 60
+    if timer <= 0:
+        screen.fill(blue)
+        game_over.play()
+        text = font50.render("GAME OVER", True, red)
+        screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
+        pygame.display.flip()
+        pygame.time.wait(3000)
+        running = False
 
-    if random.randint(0, 100) > 96: # lower number to increase the chance of adding an obstacle
+    if random.randint(0, 100) > 96:
         add_obstacle()
 
     for obstacle in obstacles:
@@ -87,16 +99,36 @@ while running:
             obstacles.remove(obstacle)
 
     if any(player.colliderect(obstacle['rect']) for obstacle in obstacles):
-        running = False # kills the game if you hit an obstacle
+        screen.fill(blue)
+        game_over.play()
+        text = font50.render("GAME OVER", True, red)
+        screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
+        pygame.display.flip()
+        pygame.time.wait(3000)
+        running = False
+
+    if top_safe_area.contains(player):
+        pygame.time.wait(500)  # Pause before showing the win screen
+        screen.fill(blue)  # Change the background to blue or any other color you prefer
+        win_fx.play()  # Play the win sound effect
+        text = font50.render("YOU WIN!", True, white)  # Change the text color if needed
+        screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
+        pygame.display.flip()
+        pygame.time.wait(3000)  # Wait for 3000 milliseconds before closing
+        running = False
 
     screen.blit(full_image, (0, 0))
     pygame.draw.rect(screen, red, player)
-
     for obstacle in obstacles:
         screen.blit(obstacle['image'], obstacle['rect'].topleft)
+
+    # Display timer
+    text = font50.render(f"Time: {int(timer)}", True, white)
+    screen.blit(text, (10, 10))
 
     pygame.display.flip()
     clock.tick(60)
 
 pygame.quit()
 sys.exit()
+
