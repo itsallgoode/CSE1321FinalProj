@@ -1,6 +1,7 @@
 import pygame
 import random
 import sys
+import loading_screen
 
 
 pygame.init()
@@ -17,8 +18,8 @@ gray = (200, 200, 200)
 black = (0, 0, 0)
 
 #timer and fonts
-timer = 30
-countdown = 3
+timer = 34 #+4 to account for when timer hidden
+countdown = 7
 last_count = pygame.time.get_ticks()
 clock = pygame.time.Clock()
 fps = 60
@@ -57,7 +58,7 @@ win = pygame.mixer.Sound('music/win.mp3')
 game_image = pygame.image.load('images/interstate.png').convert_alpha()
 game_image = pygame.transform.scale(game_image, (width, height))
 green_car = pygame.image.load('images/green_car.png').convert_alpha()
-green_car = pygame.transform.scale(green_car, (60 , 60))
+green_car = pygame.transform.scale(green_car, (70 , 60))
 blue_car = pygame.image.load('images/blue_car.png').convert_alpha()
 blue_car = pygame.transform.scale(blue_car, (70 , 60))
 red_car = pygame.image.load('images/red_car.png').convert_alpha()
@@ -65,13 +66,13 @@ red_car = pygame.transform.scale(red_car, (65 , 60))
 grey_car = pygame.image.load('images/grey_car.png').convert_alpha()
 grey_car = pygame.transform.scale(grey_car, (65 , 55))
 yellow_car = pygame.image.load('images/yellow_car.png').convert_alpha()
-yellow_car = pygame.transform.scale(yellow_car, (70 , 90))
+yellow_car = pygame.transform.scale(yellow_car, (80 , 90))
 siren_car = pygame.image.load('images/siren_car.png').convert_alpha()
 siren_car = pygame.transform.scale(siren_car, (80 , 60))
 cop_car = pygame.image.load('images/cop_car.png').convert_alpha()
-cop_car = pygame.transform.scale(cop_car, (70 , 60))
+cop_car = pygame.transform.scale(cop_car, (80 , 60))
 jeep_car = pygame.image.load('images/jeep_car.png').convert_alpha()
-jeep_car = pygame.transform.scale(jeep_car, (60 , 60))
+jeep_car = pygame.transform.scale(jeep_car, (80 , 60))
 pink_car = pygame.image.load('images/pink_car.png').convert_alpha()
 pink_car = pygame.transform.scale(pink_car, (70 , 56))
 red_truck = pygame.image.load('images/red_truck.png').convert_alpha()
@@ -99,10 +100,7 @@ plants = pygame.transform.scale(plants, (50, 30))
 tall_tree = pygame.image.load('images/tall_tree.png').convert_alpha()
 tall_tree = pygame.transform.scale(tall_tree, (80, 100))
 
-
-
-
-
+#car list
 vehicles = [green_car, blue_car, red_car, grey_car, yellow_car, siren_car, cop_car, pink_car, red_truck, jeep_car]
 vehicles_swap = [
     pygame.transform.flip(green_car, True, False),
@@ -121,7 +119,6 @@ obstacles_left = []
 
 clock = pygame.time.Clock()
 channel.play(background_music)
-
 
 #methods
 def draw_text(text, font, text_col, x, y):
@@ -150,35 +147,46 @@ player_bunny = bunny_ready
 
 while running:
     screen.blit(game_image, (0, 0))
+    time = clock.tick() / 100
     for event in pygame.event.get():
+
         if event.type == pygame.QUIT:
             running = False
-
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT and player.left > 0:
-                player.x -= player_size
-                player_bunny = bunny_left
-            elif event.key == pygame.K_RIGHT and player.right < width:
-                player.x += player_size
-                player_bunny = bunny_right
-            elif event.key == pygame.K_UP and player.top > 0:
-                player.y -= player_size
-                player_bunny = bunny_ready
-            elif event.key == pygame.K_DOWN and player.bottom < height:
-                player.y += player_size
-                player_bunny = bunny_down
-            if event.key == pygame.K_ESCAPE:
-                sys.exit()
+            if countdown <= 0:
+                if event.key == pygame.K_LEFT and player.left > 0:
+                    player.x -= player_size
+                    player_bunny = bunny_left
+                elif event.key == pygame.K_RIGHT and player.right < width:
+                    player.x += player_size
+                    player_bunny = bunny_right
+                elif event.key == pygame.K_UP and player.top > 0:
+                    player.y -= player_size
+                    player_bunny = bunny_ready
+                elif event.key == pygame.K_DOWN and player.bottom < height:
+                    player.y += player_size
+                    player_bunny = bunny_down
+                if event.key == pygame.K_ESCAPE:
+                    sys.exit()
 
-    #Win function
-    if player.colliderect(top_safe_area):
-        screen.fill(blue)
-        channel.play(win)
-        text = font50.render("You Win!", True, (white))
-        screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
-        pygame.display.flip()
-        pygame.time.wait(3000)
-        running = False
+    # directions and countdown settings
+    if countdown == 0:
+        time_now = pygame.time.get_ticks()
+
+    if countdown > 0 and countdown <= 3:
+        draw_text("GET READY!", font40, white, int(width / 2 - 110), int(height / 2 - 20))
+        draw_text(str(countdown), font40, white, int(width / 2 - 10), int(height / 2))
+        count_timer = pygame.time.get_ticks()
+        if count_timer - last_count > 1000:
+            countdown -= 1
+            last_count = count_timer
+
+    if countdown > 3:
+        draw_text("Use the arrow keypad to reach the rabbit hole", font50, black, int(5), int(height / 2 - 20))
+        count_timer = pygame.time.get_ticks()
+        if count_timer - last_count > 1000:
+            countdown -= 1
+            last_count = count_timer
 
     if random.randint(0, 100) > cars:
         add_obstacle()
@@ -194,20 +202,6 @@ while running:
         if obstacle.right > 1000 + obstacle_width:
             obstacles_right.remove(obstacle)
             obstacle_images_right.pop(0)
-
-    # timer  and countdown settings
-    if countdown == 0:
-        time_now = pygame.time.get_ticks()
-
-
-    if countdown > 0:
-        draw_text("GET READY!", font40, white, int(width / 2 - 110), int(height / 2 + 50))
-        draw_text(str(countdown), font40, white, int(width / 2 - 10), int(height / 2 + 100))
-        count_timer = pygame.time.get_ticks()
-
-        if count_timer - last_count > 1000:
-            countdown -= 1
-            last_count = count_timer
 
     #environment images
     screen.blit(grass, (0,  height - 125)) #bottom grass
@@ -228,12 +222,7 @@ while running:
     screen.blit(plants, (width / 2 - 70, 65))
     screen.blit(player_bunny, player)
 
-    #display timer
-    text = font30.render(f"Time: {int(timer)}", True, (0, 0, 0))
-    screen.blit(text, (10, 10))
-    clock.tick(60)
-    previous_time = clock.get_time()
-    fps = clock.get_fps()
+
 
     #obstacle created for screen
     for obstacle, image in zip(obstacles_left, obstacle_images_left):
@@ -241,7 +230,7 @@ while running:
     for obstacle, image in zip(obstacles_right, obstacle_images_right):
         screen.blit(image, obstacle)
 
-        # Lose Function
+    # Lose Functions
     timer -= 1 / 60
     if timer <= 0:
         screen.fill(black)
@@ -251,17 +240,37 @@ while running:
         pygame.display.flip()
         pygame.time.wait(3000)
         running = False
+
+    # display timer
+    if countdown <= 0:
+        text = font30.render(f"Time: {int(timer)}", True, (0, 0, 0))
+        screen.blit(text, (10, 10))
+    clock.tick(60)
+    previous_time = clock.get_time()
+    fps = clock.get_fps()
+
     if any(player.colliderect(obstacle) for obstacle in obstacles_left) or any(player.colliderect(obstacle) for obstacle in obstacles_right):
         screen.fill(black)
         channel.play(game_over)
-        text = font50.render("Game Over", True, (red))
+        text = font50.render("GAME OVER", True, (red))
         screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
         pygame.display.flip()
         pygame.time.wait(3000)
         running = False
+
+        # Win function
+        if player.colliderect(top_safe_area):
+            screen.fill(blue)
+            channel.play(win)
+            text = font50.render("You Win!", True, (white))
+            screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
+            pygame.display.flip()
+            pygame.time.wait(3000)
+            running = False
 
     pygame.display.flip()
     clock.tick(60)
 
 pygame.quit()
 sys.exit()
+#loading_screen.main()
