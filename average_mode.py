@@ -28,8 +28,8 @@ font50 = pygame.font.SysFont('Constantia', 50)
 
 #Dimentions
 player_size = 40
-obstacle_width = 110
-obstacle_height = 60
+obstacle_width = 80
+obstacle_height = 50
 obstacle_speed = 8
 safe_area_height = 100
 middle_height = height - 2 * safe_area_height
@@ -57,31 +57,31 @@ win = pygame.mixer.Sound('music/win.mp3')
 game_image = pygame.image.load('images/interstate.png').convert_alpha()
 game_image = pygame.transform.scale(game_image, (width, height))
 green_car = pygame.image.load('images/green_car.png').convert_alpha()
-green_car = pygame.transform.scale(green_car, (obstacle_width - 20 , obstacle_height - 10))
+green_car = pygame.transform.scale(green_car, (60 , 60))
 blue_car = pygame.image.load('images/blue_car.png').convert_alpha()
-blue_car = pygame.transform.scale(blue_car, (obstacle_width, obstacle_height))
+blue_car = pygame.transform.scale(blue_car, (70 , 60))
 red_car = pygame.image.load('images/red_car.png').convert_alpha()
-red_car = pygame.transform.scale(red_car, (obstacle_width - 20, obstacle_height - 10))
+red_car = pygame.transform.scale(red_car, (65 , 60))
 grey_car = pygame.image.load('images/grey_car.png').convert_alpha()
-grey_car = pygame.transform.scale(grey_car, (obstacle_width - 20, obstacle_height - 10))
+grey_car = pygame.transform.scale(grey_car, (65 , 55))
 yellow_car = pygame.image.load('images/yellow_car.png').convert_alpha()
-yellow_car = pygame.transform.scale(yellow_car, (obstacle_width , obstacle_height + 10))
+yellow_car = pygame.transform.scale(yellow_car, (70 , 90))
 siren_car = pygame.image.load('images/siren_car.png').convert_alpha()
-siren_car = pygame.transform.scale(siren_car, (obstacle_width, obstacle_height))
+siren_car = pygame.transform.scale(siren_car, (80 , 60))
 cop_car = pygame.image.load('images/cop_car.png').convert_alpha()
-cop_car = pygame.transform.scale(cop_car, (obstacle_width, obstacle_height))
+cop_car = pygame.transform.scale(cop_car, (70 , 60))
 jeep_car = pygame.image.load('images/jeep_car.png').convert_alpha()
-jeep_car = pygame.transform.scale(jeep_car, (obstacle_width - 5 , obstacle_height - 5))
+jeep_car = pygame.transform.scale(jeep_car, (60 , 60))
 pink_car = pygame.image.load('images/pink_car.png').convert_alpha()
-pink_car = pygame.transform.scale(pink_car, (obstacle_width - 5, obstacle_height - 5))
+pink_car = pygame.transform.scale(pink_car, (70 , 56))
 red_truck = pygame.image.load('images/red_truck.png').convert_alpha()
-red_truck = pygame.transform.scale(red_truck, (obstacle_width, obstacle_height))
+red_truck = pygame.transform.scale(red_truck, (80 , 60))
 moss_car = pygame.image.load('images/moss_car.png').convert_alpha()
-moss_car = pygame.transform.scale(moss_car, (obstacle_width - 15, obstacle_height))
+moss_car = pygame.transform.scale(moss_car, (60 , 60))
 burn_car = pygame.image.load('images/burn_car.png').convert_alpha()
-burn_car = pygame.transform.scale(burn_car, (obstacle_width - 10, obstacle_height))
+burn_car = pygame.transform.scale(burn_car, (60 , 60))
 bunny_down = pygame.image.load('images/bunny_down.png').convert_alpha()
-bunny_down = pygame.transform.scale(bunny_down, (player_size, player_size))
+bunny_down = pygame.transform.scale(bunny_down, (player_size , player_size))
 bunny_ready = pygame.image.load('images/bunny_ready.png').convert_alpha()
 bunny_ready =pygame.transform.scale(bunny_ready, (player_size, player_size))
 bunny_left = pygame.image.load('images/bunny_left.png').convert_alpha()
@@ -131,10 +131,10 @@ def draw_text(text, font, text_col, x, y):
 # randomly selects a lane and calculates the position for a new obstacle
 def add_obstacle():
     lane = random.randint(0, lanes - 1)
-    y_position_one = 40 + (safe_area_height + lane * lane_height)
+    y_position_one = 30 + (safe_area_height + lane * lane_height)
     new_obstacle = pygame.Rect(width, y_position_one, obstacle_width, obstacle_height)
 
-    y_position_two = ((middle_height / 2 + 135) + lane * lane_height) + 5
+    y_position_two = ((middle_height / 2 + 130) + lane * lane_height) + 5
     new_obstacle_two = pygame.Rect(0 - obstacle_width, y_position_two, obstacle_width, obstacle_height)
 
     # keeps the obstacles from overlapping
@@ -170,17 +170,6 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 sys.exit()
 
-    #Lose Function
-    timer -= 1 / 60
-    if timer <= 0:
-        screen.fill(black)
-        game_over.play()
-        text = font50.render("GAME OVER", True, red)
-        screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
-        pygame.display.flip()
-        pygame.time.wait(3000)
-        running = False
-
     #Win function
     if player.colliderect(top_safe_area):
         screen.fill(blue)
@@ -206,16 +195,6 @@ while running:
             obstacles_right.remove(obstacle)
             obstacle_images_right.pop(0)
 
-
-    if any(player.colliderect(obstacle) for obstacle in obstacles_left) or any(player.colliderect(obstacle) for obstacle in obstacles_right):
-        screen.fill(black)
-        channel.play(game_over)
-        text = font50.render("Game Over", True, (red))
-        screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
-        pygame.display.flip()
-        pygame.time.wait(3000)
-        running = False
-
     # timer  and countdown settings
     if countdown == 0:
         time_now = pygame.time.get_ticks()
@@ -225,6 +204,7 @@ while running:
         draw_text("GET READY!", font40, white, int(width / 2 - 110), int(height / 2 + 50))
         draw_text(str(countdown), font40, white, int(width / 2 - 10), int(height / 2 + 100))
         count_timer = pygame.time.get_ticks()
+
         if count_timer - last_count > 1000:
             countdown -= 1
             last_count = count_timer
@@ -248,17 +228,37 @@ while running:
     screen.blit(plants, (width / 2 - 70, 65))
     screen.blit(player_bunny, player)
 
+    #display timer
     text = font30.render(f"Time: {int(timer)}", True, (0, 0, 0))
     screen.blit(text, (10, 10))
     clock.tick(60)
     previous_time = clock.get_time()
     fps = clock.get_fps()
 
-    #obstacles are created for screen
+    #obstacle created for screen
     for obstacle, image in zip(obstacles_left, obstacle_images_left):
         screen.blit(image, obstacle)
     for obstacle, image in zip(obstacles_right, obstacle_images_right):
         screen.blit(image, obstacle)
+
+        # Lose Function
+    timer -= 1 / 60
+    if timer <= 0:
+        screen.fill(black)
+        game_over.play()
+        text = font50.render("GAME OVER", True, red)
+        screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
+        pygame.display.flip()
+        pygame.time.wait(3000)
+        running = False
+    if any(player.colliderect(obstacle) for obstacle in obstacles_left) or any(player.colliderect(obstacle) for obstacle in obstacles_right):
+        screen.fill(black)
+        channel.play(game_over)
+        text = font50.render("Game Over", True, (red))
+        screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
+        pygame.display.flip()
+        pygame.time.wait(3000)
+        running = False
 
     pygame.display.flip()
     clock.tick(60)
