@@ -1,7 +1,8 @@
 import pygame
 import sys
-import os
-
+import easy_mode
+import hard_mode
+import medium_mode
 # Initialize Pygame
 pygame.init()
 
@@ -62,11 +63,11 @@ def main():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
                 if easy_rect.collidepoint(mouse_pos):
-                    os.system("python easy_mode.py")
+                    easy_mode.main()
                 elif medium_rect.collidepoint(mouse_pos):
-                    os.system("python medium_mode.py")
+                    medium_mode.main()
                 elif hard_rect.collidepoint(mouse_pos):
-                    os.system("python hard_mode.py")
+                    hard_mode.main()
                 elif exit_rect.collidepoint(mouse_pos):
                     running = False
 
