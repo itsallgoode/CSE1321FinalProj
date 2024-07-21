@@ -51,16 +51,18 @@ def draw_text(text, font, text_col, x, y):
     screen.blit(img, (x, y))
 
 def show_loading_screen(screen):
+    pygame.mixer.music.load("music/music.wav")
+    pygame.mixer.music.play(-1, 0.0, 5000)
     font30 = pygame.font.SysFont('gillsansultracondensed', 30)
     font20 = pygame.font.SysFont('gillsansultracondensed', 20)
     font = pygame.font.SysFont('gillsansultracondensed', 70)
     font_title = pygame.font.SysFont('maturascriptcapitals', 100)
 
     #button rects
-    easy_rect = pygame.Rect(360, 295, 270, 50)
-    medium_rect = pygame.Rect(360, 375, 270, 50)
-    hard_rect = pygame.Rect(360, 460, 270, 50)
-    exit_rect = pygame.Rect(360, 545, 270, 50)
+    easy_rect = pygame.Rect(365, 295, 270, 50)
+    medium_rect = pygame.Rect(365, 375, 270, 50)
+    hard_rect = pygame.Rect(365, 460, 270, 50)
+    exit_rect = pygame.Rect(365, 545, 270, 50)
 
     # Button setup
     #button_color = (0, 128, 0)
