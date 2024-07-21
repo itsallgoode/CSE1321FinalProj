@@ -261,14 +261,14 @@ while running:
         running = False
 
         # Win function
-        if player.colliderect(top_safe_area):
-            screen.blit(background_image, (0, 0))
-            channel.play(win)
-            text = font50.render("You Win!", True, (white))
-            screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
-            pygame.display.flip()
-            pygame.time.wait(3000)
-            running = False
+    if player.colliderect(top_safe_area):
+        screen.blit(background_image, (0, 0))
+        channel.play(win)
+        text = font50.render("You Win!", True, (white))
+        screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
+        pygame.display.flip()
+        pygame.time.wait(3000)
+        running = False
 
     pygame.display.flip()
     clock.tick(60)
