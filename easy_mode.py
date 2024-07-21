@@ -9,7 +9,7 @@ pygame.init()
 
 width, height = 1000, 750
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Crossing')
+pygame.display.set_caption('The Crossing')
 
 #color variables
 white = (255, 255, 255)
