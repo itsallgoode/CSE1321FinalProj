@@ -42,7 +42,7 @@ def main():
     top_safe_area = pygame.Rect(width / 2 - 50 , 0, 100 , safe_area_height - 50)
 
     return_button = pygame.Rect(width - 150, 5, 120, 40)
-    return_text = font30.render("RETURN", True, white)
+    return_text = font30.render("RETURN", True, black)
 
     #player
     player_start_x = width // 2 - player_size // 2
@@ -227,7 +227,7 @@ def main():
         screen.blit(tall_tree, (width / 2 + 20, -10))
         screen.blit(plants, (width / 2 + 15, 65))
         screen.blit(plants, (width / 2 - 70, 65))
-        pygame.draw.rect(screen, green, return_button)
+        pygame.draw.rect(screen, black, return_button, 2)
         screen.blit(return_text, (return_button.x, return_button.y + 10))
         screen.blit(player_bunny, player)
 
