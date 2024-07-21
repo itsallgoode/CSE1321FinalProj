@@ -1,9 +1,10 @@
 import pygame
 import random
 import sys
+import os
 
 
-def main(): 
+def main():
         
     pygame.init()
 
@@ -14,7 +15,7 @@ def main():
     white = (255, 255, 255)
     red = (255, 0, 0)
     blue = (0, 0, 255)
-    green = (0, 255, 0)
+    green = (10, 150, 100)
     gray = (200, 200, 200)
     black = (0, 0, 0)
 
@@ -37,11 +38,11 @@ def main():
     middle_height = height - 2 * safe_area_height
     lanes = 3
     lane_height = 65
-    cars = 92 #(0-100)lower number to increase the chance of adding an obstacle
+    cars = 96 #(0-100)lower number to increase the chance of adding an obstacle
     top_safe_area = pygame.Rect(width / 2 - 50 , 0, 100 , safe_area_height - 50)
-    bottom_safe_area = pygame.Rect(0, height - safe_area_height, width, safe_area_height)
-    middle_area = pygame.Rect(0, safe_area_height, width, middle_height)
 
+    return_button = pygame.Rect(width - 150, 5, 120, 40)
+    return_text = font30.render("RETURN", True, white)
 
     #player
     player_start_x = width // 2 - player_size // 2
@@ -153,6 +154,11 @@ def main():
 
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if return_button.collidepoint(event.pos):
+                    pygame.quit()
+                    os.system("python loading_screen.py")
+                    sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if countdown <= 0:
                     if event.key == pygame.K_LEFT and player.left > 0:
@@ -221,6 +227,8 @@ def main():
         screen.blit(tall_tree, (width / 2 + 20, -10))
         screen.blit(plants, (width / 2 + 15, 65))
         screen.blit(plants, (width / 2 - 70, 65))
+        pygame.draw.rect(screen, green, return_button)
+        screen.blit(return_text, (return_button.x, return_button.y + 10))
         screen.blit(player_bunny, player)
 
 
@@ -259,15 +267,15 @@ def main():
             pygame.time.wait(3000)
             running = False
 
-            # Win function
-            if player.colliderect(top_safe_area):
-                screen.fill(blue)
-                channel.play(win)
-                text = font50.render("You Win!", True, (white))
-                screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
-                pygame.display.flip()
-                pygame.time.wait(3000)
-                running = False
+        # Win function
+        if player.colliderect(top_safe_area):
+            screen.fill(blue)
+            channel.play(win)
+            text = font50.render("You Win!", True, (white))
+            screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
+            pygame.display.flip()
+            pygame.time.wait(3000)
+            running = False
 
         pygame.display.flip()
         clock.tick(60)
