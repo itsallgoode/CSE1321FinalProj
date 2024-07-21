@@ -1,5 +1,5 @@
 import pygame
-#from pygame.locals import *
+from pygame.locals import *
 import random
 import sys
 
@@ -14,14 +14,14 @@ pygame.display.set_caption('Crossing')
 #color variables
 white = (255, 255, 255)
 red = (255, 0, 0)
-blue = (15, 97, 99)
+blue = (0, 0, 255)
 green = (0, 255, 0)
 gray = (200, 200, 200)
 black = (0, 0, 0)
 yellow = (255, 189, 25)
 
 #game variables
-player_size = 30
+player_size = 40
 obstacle_width = 85
 obstacle_height = 50
 obstacle_speed = 6
@@ -42,7 +42,6 @@ countdown = 3
 last_count = pygame.time.get_ticks()
 timer = 30
 
-
 #endges/safety
 top_safe_area = pygame.Rect(0, 0, width, safe_area_height)
 bottom_safe_area = pygame.Rect(0, 90 - safe_area_height, width, safe_area_height)
@@ -50,49 +49,49 @@ middle_area = pygame.Rect(0, safe_area_height, width, middle_height)
 
 #Images
 #character images
-playerReady_img = pygame.image.load("images/swimmerready.png").convert_alpha()
-playerReady_img = pygame.transform.scale(playerReady_img, (20, 30))
-playerSwim_img = pygame.image.load("images/swimming.png").convert_alpha()
-playerSwim_img = pygame.transform.scale(playerSwim_img, (25, 25))
-playerLeft_img = pygame.image.load("images/swimmerleft.png").convert_alpha()
-playerLeft_img = pygame.transform.scale(playerLeft_img, (25, 25))
-playerRight_img = pygame.image.load("images/swimmerright.png").convert_alpha()
-playerRight_img = pygame.transform.scale(playerRight_img, (25, 25))
-playerBack_img = pygame.image.load("images/swimmerback.png").convert_alpha()
-playerBack_img = pygame.transform.scale(playerBack_img, (25, 25))
-#playerLost_img = pygame.image.load("swimmerlost.png").convert_alpha()
-#playerLost_img = pygame.transform.scale(playerLost_img, (40, 40))
+playerReady_img = pygame.image.load("swimmerready.png").convert_alpha()
+playerReady_img = pygame.transform.scale(playerReady_img, (30, 40))
+playerSwim_img = pygame.image.load("swimming.png").convert_alpha()
+playerSwim_img = pygame.transform.scale(playerSwim_img, (30, 40))
+playerLeft_img = pygame.image.load("swimmerleft.png").convert_alpha()
+playerLeft_img = pygame.transform.scale(playerLeft_img, (35, 35))
+playerRight_img = pygame.image.load("swimmerright.png").convert_alpha()
+playerRight_img = pygame.transform.scale(playerRight_img, (35, 35))
+playerBack_img = pygame.image.load("swimmerback.png").convert_alpha()
+playerBack_img = pygame.transform.scale(playerBack_img, (35, 35))
+surf_player = playerReady_img
+
 
 #background images
-water_img = pygame.image.load("images/Water.png").convert_alpha()
+water_img = pygame.image.load("Water.png").convert_alpha()
 water_img = pygame.transform.scale(water_img, (width, height))
-sandTop_img = pygame.image.load('images/Topbeach.png').convert_alpha()
+sandTop_img = pygame.image.load('Topbeach.png').convert_alpha()
 sandTop_img = pygame.transform.scale(sandTop_img, (width, safe_area_height - 20))
-sandBottom_img = pygame.image.load('images/Bottombeach.png').convert_alpha()
+sandBottom_img = pygame.image.load('Bottombeach.png').convert_alpha()
 sandBottom_img = pygame.transform.scale(sandBottom_img, (width, safe_area_height))
-palmtree_img = pygame.image.load('images/Palmtree.png').convert_alpha()
+palmtree_img = pygame.image.load('Palmtree.png').convert_alpha()
 palmtree_img = pygame.transform.scale(palmtree_img, (50, 50))
-dock_img = pygame.image.load('images/dock.png')
-dockFlip_img = pygame.image.load('images/Dockflip.png')
+dock_img = pygame.image.load('dock.png')
+dockFlip_img = pygame.image.load('Dockflip.png')
 
 #object images
-barrel_img = pygame.image.load('images/barrel.png').convert_alpha()
+barrel_img = pygame.image.load('barrel.png').convert_alpha()
 barrel_img = pygame.transform.scale(barrel_img, (50, 50))
-wood_img = pygame.image.load('images/floatingwood.png').convert_alpha()
+wood_img = pygame.image.load('floatingwood.png').convert_alpha()
 wood_img = pygame.transform.scale(wood_img, (80, 40))
-ship1_img = pygame.image.load('images/boat1.png').convert_alpha()
+ship1_img = pygame.image.load('boat1.png').convert_alpha()
 ship1_img = pygame.transform.scale(ship1_img, (110, 60))
-ship2_img = pygame.image.load('images/boat2.png').convert_alpha()
+ship2_img = pygame.image.load('boat2.png').convert_alpha()
 ship2_img = pygame.transform.scale(ship2_img, (110, 60))
-buoy_img = pygame.image.load('images/buoy.png').convert_alpha()
+buoy_img = pygame.image.load('buoy.png').convert_alpha()
 buoy_img = pygame.transform.scale(buoy_img, (50, 70))
 
 #sound
-pygame.mixer.music.load('music/music.wav')
+pygame.mixer.music.load('music.wav')
 pygame.mixer.music.play(-1, 0.0, 5000)
-game_over = pygame.mixer.Sound('music/game_over.wav')
+game_over = pygame.mixer.Sound('game_over.wav')
 game_over.set_volume(0.5)
-win_fx = pygame.mixer.Sound('music/win.mp3')
+win_fx = pygame.mixer.Sound('win.mp3')
 win_fx.set_volume(0.5)
 
 #player
@@ -106,7 +105,6 @@ player_surf = pygame.Surface((30, 100))
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
-
 
 obstacles = []
 obstacle_images = []
@@ -141,6 +139,7 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
+
     #once count reaches 0 things inside will start
     if countdown == 0:
         time_now = pygame.time.get_ticks()
@@ -156,10 +155,10 @@ while running:
             pygame.time.wait(3000)
             running = False
 
+        #obstacle direction/random
         if random.randint(0, 100) > 96:  # lower number to increase the chance of adding an obstacle
             add_obstacle()
 
-        #obstacle direction/random
         for obstacle in obstacles:
             obstacle.x -= obstacle_speed
             if obstacle.right < 0:
@@ -180,16 +179,16 @@ while running:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT] and player.left > 0:
             player.x -= 5
-            player_surf = playerLeft_img
+            surf_player = playerLeft_img
         if keys[pygame.K_RIGHT] and player.right < width:
-            player_surf = playerRight_img
             player.x += 5
+            surf_player = playerRight_img
         if keys[pygame.K_UP] and player.top > 0:
-            player_surf = playerSwim_img
             player.y -= 5
+            surf_player = playerSwim_img
         if keys[pygame.K_DOWN] and player.bottom < width:
-            player_surf = playerBack_img
             player.y += 5
+            surf_player = playerBack_img
 
         #if times runs out they lose
         timer -= 1 / 60
@@ -240,10 +239,12 @@ while running:
     for obstacle, image in zip(obstacles_right, obstacle_images):
         screen.blit(image, obstacle)
     #player blit
-    screen.blit(player_surf, player)
+    screen.blit(surf_player, player)
+    #timer blit
     text = font30.render(f"Time: {int(timer)}", True, (0, 0, 0))
     screen.blit(text, (10, 10))
-    pygame.display.update()
+
+    pygame.display.flip()
     clock.tick(60)
     previous_time = clock.get_time()
     fps = clock.get_fps()
