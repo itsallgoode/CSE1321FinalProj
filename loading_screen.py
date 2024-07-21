@@ -44,8 +44,10 @@ def show_loading_screen():
     pygame.draw.rect(screen, blue, exit_rect)
 
     # Draw text
-    draw_text("The Crossing", font_title, blue, width - 820, height - 700)
-    draw_text("MAIN MENU", font, white, width - 680, height - 560)
+    draw_text("The Crossing", font_title, white, width - 820, height - 700)
+    draw_text("The Crossing", font_title, blue, width - 820, height - 705)
+    draw_text("MAIN MENU", font, blue, width - 680, height - 560)
+    draw_text("MAIN MENU", font, white, width - 680, height - 565)
     draw_text("EASY", font30, white, width / 2 - 35, height - 450)
     draw_text("MEDIUM", font30, white, width / 2 - 50, height - 370)
     draw_text("HARD", font30, white, width / 2 - 35, height - 280)
