@@ -49,49 +49,49 @@ middle_area = pygame.Rect(0, safe_area_height, width, middle_height)
 
 #Images
 #character images
-playerReady_img = pygame.image.load("swimmerready.png").convert_alpha()
+playerReady_img = pygame.image.load("images/swimmerready.png").convert_alpha()
 playerReady_img = pygame.transform.scale(playerReady_img, (30, 40))
-playerSwim_img = pygame.image.load("swimming.png").convert_alpha()
+playerSwim_img = pygame.image.load("images/swimming.png").convert_alpha()
 playerSwim_img = pygame.transform.scale(playerSwim_img, (30, 40))
-playerLeft_img = pygame.image.load("swimmerleft.png").convert_alpha()
+playerLeft_img = pygame.image.load("images/swimmerleft.png").convert_alpha()
 playerLeft_img = pygame.transform.scale(playerLeft_img, (35, 35))
-playerRight_img = pygame.image.load("swimmerright.png").convert_alpha()
+playerRight_img = pygame.image.load("images/swimmerright.png").convert_alpha()
 playerRight_img = pygame.transform.scale(playerRight_img, (35, 35))
-playerBack_img = pygame.image.load("swimmerback.png").convert_alpha()
+playerBack_img = pygame.image.load("images/swimmerback.png").convert_alpha()
 playerBack_img = pygame.transform.scale(playerBack_img, (35, 35))
 surf_player = playerReady_img
 
 
 #background images
-water_img = pygame.image.load("Water.png").convert_alpha()
+water_img = pygame.image.load("images/Water.png").convert_alpha()
 water_img = pygame.transform.scale(water_img, (width, height))
-sandTop_img = pygame.image.load('Topbeach.png').convert_alpha()
+sandTop_img = pygame.image.load('images/Topbeach.png').convert_alpha()
 sandTop_img = pygame.transform.scale(sandTop_img, (width, safe_area_height - 20))
-sandBottom_img = pygame.image.load('Bottombeach.png').convert_alpha()
+sandBottom_img = pygame.image.load('images/Bottombeach.png').convert_alpha()
 sandBottom_img = pygame.transform.scale(sandBottom_img, (width, safe_area_height))
-palmtree_img = pygame.image.load('Palmtree.png').convert_alpha()
+palmtree_img = pygame.image.load('images/Palmtree.png').convert_alpha()
 palmtree_img = pygame.transform.scale(palmtree_img, (50, 50))
-dock_img = pygame.image.load('dock.png')
-dockFlip_img = pygame.image.load('Dockflip.png')
+dock_img = pygame.image.load('images/dock.png')
+dockFlip_img = pygame.image.load('images/Dockflip.png')
 
 #object images
-barrel_img = pygame.image.load('barrel.png').convert_alpha()
+barrel_img = pygame.image.load('images/barrel.png').convert_alpha()
 barrel_img = pygame.transform.scale(barrel_img, (50, 50))
-wood_img = pygame.image.load('floatingwood.png').convert_alpha()
+wood_img = pygame.image.load('images/floatingwood.png').convert_alpha()
 wood_img = pygame.transform.scale(wood_img, (80, 40))
-ship1_img = pygame.image.load('boat1.png').convert_alpha()
+ship1_img = pygame.image.load('images/boat1.png').convert_alpha()
 ship1_img = pygame.transform.scale(ship1_img, (110, 60))
-ship2_img = pygame.image.load('boat2.png').convert_alpha()
+ship2_img = pygame.image.load('images/boat2.png').convert_alpha()
 ship2_img = pygame.transform.scale(ship2_img, (110, 60))
-buoy_img = pygame.image.load('buoy.png').convert_alpha()
+buoy_img = pygame.image.load('images/buoy.png').convert_alpha()
 buoy_img = pygame.transform.scale(buoy_img, (50, 70))
 
 #sound
-pygame.mixer.music.load('music.wav')
+pygame.mixer.music.load('music/music.wav')
 pygame.mixer.music.play(-1, 0.0, 5000)
-game_over = pygame.mixer.Sound('game_over.wav')
+game_over = pygame.mixer.Sound('music/game_over.wav')
 game_over.set_volume(0.5)
-win_fx = pygame.mixer.Sound('win.mp3')
+win_fx = pygame.mixer.Sound('music/win.mp3')
 win_fx.set_volume(0.5)
 
 #player
