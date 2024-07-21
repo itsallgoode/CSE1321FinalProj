@@ -54,7 +54,6 @@ def show_loading_screen(screen):
     pygame.mixer.music.load("music/music.wav")
     pygame.mixer.music.play(-1, 0.0, 5000)
     font30 = pygame.font.SysFont('gillsansultracondensed', 30)
-    font20 = pygame.font.SysFont('gillsansultracondensed', 20)
     font = pygame.font.SysFont('gillsansultracondensed', 70)
     font_title = pygame.font.SysFont('maturascriptcapitals', 100)
 
