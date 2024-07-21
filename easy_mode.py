@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 import random
 import sys
-
+import loading_screen
 #from pygame import mixer
 
 pygame.init()
@@ -15,6 +15,7 @@ pygame.display.set_caption('Crossing')
 white = (255, 255, 255)
 red = (255, 0, 0)
 blue = (0, 0, 255)
+blue_menu = (41, 86, 143)
 green = (0, 255, 0)
 gray = (200, 200, 200)
 black = (0, 0, 0)
@@ -22,7 +23,7 @@ yellow = (255, 189, 25)
 
 #game variables
 player_size = 40
-obstacle_width = 85
+obstacle_width = 90
 obstacle_height = 50
 obstacle_speed = 6
 safe_area_height = 100
@@ -31,9 +32,10 @@ lanes = 3
 lane_height = middle_height // lanes
 
 #fonts
-font30 = pygame.font.SysFont('Constantia', 30)
+font30 = pygame.font.SysFont('gillsansultracondensed', 30)
 font40 = pygame.font.SysFont('Constantia', 40)
 font50 = pygame.font.SysFont('Constantia', 50)
+font = pygame.font.SysFont('gillsansultracondensed', 40)
 
 #time
 clock = pygame.time.Clock()
@@ -85,6 +87,10 @@ ship2_img = pygame.image.load('images/boat2.png').convert_alpha()
 ship2_img = pygame.transform.scale(ship2_img, (110, 60))
 buoy_img = pygame.image.load('images/buoy.png').convert_alpha()
 buoy_img = pygame.transform.scale(buoy_img, (50, 70))
+red_boat_img = pygame.image.load('images/red_boat.png').convert_alpha()
+red_boat_img = pygame.transform.scale(red_boat_img, (85, 60))
+orange_boat_img = pygame.image.load('images/orange_boat.png').convert_alpha()
+orange_boat_img = pygame.transform.scale(orange_boat_img, (75, 60))
 
 #sound
 pygame.mixer.music.load('music/music.wav')
@@ -110,7 +116,7 @@ obstacles = []
 obstacle_images = []
 obstacles_right = []
 obstacles_left = []
-objects = [wood_img, barrel_img, ship1_img, buoy_img, ship2_img]
+objects = [wood_img, barrel_img, ship1_img, buoy_img, ship2_img, red_boat_img, orange_boat_img,]
 
 
 # randomly selects a lane and calculates the position for a new obstacle
@@ -140,6 +146,12 @@ while running:
                 pygame.quit()
                 sys.exit()
 
+    if countdown > 3:
+        draw_text("Use the arrow keypad to reach the rabbit hole", font50, black, int(5), int(height / 2 - 20))
+        count_timer = pygame.time.get_ticks()
+        if count_timer - last_count > 1000:
+            countdown -= 1
+            last_count = count_timer
     #once count reaches 0 things inside will start
     if countdown == 0:
         time_now = pygame.time.get_ticks()
@@ -214,6 +226,8 @@ while running:
 
     #starts the count down
     if countdown > 0:
+        draw_text("Use ARROWS to get to the other side", font, blue_menu, width / 2 - 300, height - 450)
+        draw_text("before the Time runs out.", font, blue_menu, width / 2 - 220, height - 410)
         draw_text("GET READY!", font40, white, int(width / 2 - 110), int(height / 2 + 50))
         draw_text(str(countdown), font40, white, int(width / 2 - 10), int(height / 2 + 100))
         count_timer = pygame.time.get_ticks()
@@ -241,8 +255,8 @@ while running:
     #player blit
     screen.blit(surf_player, player)
     #timer blit
-    text = font30.render(f"Time: {int(timer)}", True, (0, 0, 0))
-    screen.blit(text, (10, 10))
+    text = font30.render(f"Time: {int(timer)}", True, (255, 255, 255))
+    screen.blit(text, (20, 20))
 
     pygame.display.flip()
     clock.tick(60)
