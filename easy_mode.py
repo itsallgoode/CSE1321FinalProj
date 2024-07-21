@@ -23,12 +23,12 @@ yellow = (255, 189, 25)
 
 #game variables
 player_size = 40
-obstacle_width = 90
+obstacle_width = 85
 obstacle_height = 50
 obstacle_speed = 6
 safe_area_height = 100
 middle_height = height - 2 * safe_area_height
-lanes = 3
+lanes = 7
 lane_height = middle_height // lanes
 
 #fonts
@@ -82,9 +82,9 @@ barrel_img = pygame.transform.scale(barrel_img, (50, 50))
 wood_img = pygame.image.load('images/floatingwood.png').convert_alpha()
 wood_img = pygame.transform.scale(wood_img, (80, 40))
 ship1_img = pygame.image.load('images/boat1.png').convert_alpha()
-ship1_img = pygame.transform.scale(ship1_img, (110, 60))
+ship1_img = pygame.transform.scale(ship1_img, (90, 60))
 ship2_img = pygame.image.load('images/boat2.png').convert_alpha()
-ship2_img = pygame.transform.scale(ship2_img, (110, 60))
+ship2_img = pygame.transform.scale(ship2_img, (90, 60))
 buoy_img = pygame.image.load('images/buoy.png').convert_alpha()
 buoy_img = pygame.transform.scale(buoy_img, (50, 70))
 red_boat_img = pygame.image.load('images/red_boat.png').convert_alpha()
@@ -116,7 +116,7 @@ obstacles = []
 obstacle_images = []
 obstacles_right = []
 obstacles_left = []
-objects = [wood_img, barrel_img, ship1_img, buoy_img, ship2_img, red_boat_img, orange_boat_img,]
+objects = [wood_img, barrel_img, ship1_img, buoy_img, ship2_img, red_boat_img, orange_boat_img, ship2_img, ship1_img]
 
 
 # randomly selects a lane and calculates the position for a new obstacle
@@ -168,7 +168,7 @@ while running:
             running = False
 
         #obstacle direction/random
-        if random.randint(0, 100) > 96:  # lower number to increase the chance of adding an obstacle
+        if random.randint(0, 100) > 95:  # lower number to increase the chance of adding an obstacle
             add_obstacle()
 
         for obstacle in obstacles:
