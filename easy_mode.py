@@ -169,27 +169,6 @@ def main():
                 pygame.time.wait(3000)
                 game_end = 1  # added this to go to the menu screen instead of exiting out
 
-            #obstacle direction/random
-            if random.randint(0, 100) > 95:  # lower number to increase the chance of adding an obstacle
-                add_obstacle()
-
-            for obstacle in obstacles:
-                obstacle.x -= obstacle_speed
-                if obstacle.right < 0:
-                    obstacles.remove(obstacle)
-
-            for obstacle, image in zip(obstacles_left, obstacle_images[:len(obstacles_left)]):
-                obstacle.x -= obstacle_speed
-                if obstacle.right < 0:
-                    obstacles_left.remove(obstacle)
-                    obstacle_images.pop(0)
-
-            for obstacle, image in zip(obstacles_right, obstacle_images[:len(obstacles_left)]):
-                obstacle.x += obstacle_speed
-                if obstacle.right > 1000 + obstacle_width:
-                    obstacles_right.remove(obstacle)
-                    obstacle_images.pop(0)
-
             keys = pygame.key.get_pressed()
             if keys[pygame.K_LEFT] and player.left > 0:
                 player.x -= 5
@@ -225,7 +204,31 @@ def main():
                 pygame.display.flip()
                 pygame.time.wait(3000)
                 game_end = 1  # kills the game if you hit an obstacle
+        # obstacle direction/random
+        if random.randint(0, 100) > 95:  # lower number to increase the chance of adding an obstacle
+            add_obstacle()
 
+        for obstacle in obstacles:
+            obstacle.x -= obstacle_speed
+            if obstacle.right < 0:
+                obstacles.remove(obstacle)
+
+        for obstacle, image in zip(obstacles_left, obstacle_images[:len(obstacles_left)]):
+            obstacle.x -= obstacle_speed
+            if obstacle.right < 0:
+                obstacles_left.remove(obstacle)
+                obstacle_images.pop(0)
+
+        for obstacle, image in zip(obstacles_right, obstacle_images[:len(obstacles_left)]):
+            obstacle.x += obstacle_speed
+            if obstacle.right > 1000 + obstacle_width:
+                obstacles_right.remove(obstacle)
+                obstacle_images.pop(0)
+        # obsticle blit
+        for obstacle, image in zip(obstacles_left, obstacle_images):
+            screen.blit(image, obstacle)
+        for obstacle, image in zip(obstacles_right, obstacle_images):
+            screen.blit(image, obstacle)
         #starts the count down
         if countdown > 0:
             draw_text("Use ARROWS to get to the other side", font, blue_menu, width / 2 - 300, height - 450)
@@ -251,11 +254,7 @@ def main():
         screen.blit(palmtree_img, (345, 695))
         screen.blit(palmtree_img, (645, 690))
         screen.blit(palmtree_img, (145, 660))
-        #obsticle blit
-        for obstacle, image in zip(obstacles_left, obstacle_images):
-            screen.blit(image, obstacle)
-        for obstacle, image in zip(obstacles_right, obstacle_images):
-            screen.blit(image, obstacle)
+
         #player blit
         screen.blit(surf_player, player)
         #timer blit
