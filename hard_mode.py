@@ -22,7 +22,7 @@ def main():
     lanes = 6
     lane_height = middle_height // lanes
 
-    font50 = pygame.font.SysFont('Constantia', 50)
+    font50 = pygame.font.SysFont('Constantia', 70)
     font30 = pygame.font.SysFont('Constantia', 30)
     timer = 15
     top_safe_area = pygame.Rect(0, 0, width, safe_area_height)
@@ -55,6 +55,8 @@ def main():
     racecar_image = [pygame.transform.scale(image, (obstacle_width, obstacle_height)) for image in racecar_image]
     top_center_x = (width - cat_bed.get_width()) // 2
     top_center_y = (safe_area_height - cat_bed.get_height()) // 2
+    background_image = pygame.image.load('images/blue_bg.webp')
+    background_image = pygame.transform.scale(background_image, (width, height))
     obstacles = []
 
     # randomly selects a lane and calculates the position for a new obstacle
@@ -102,7 +104,7 @@ def main():
 
         timer -= 1 / 60
         if timer <= 0:
-            screen.fill(blue)
+            screen.blit(background_image, (0, 0))
             game_over.play()
             text = font50.render("GAME OVER", True, red)
             screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
@@ -119,7 +121,7 @@ def main():
                 obstacles.remove(obstacle)
 
         if any(player.colliderect(obstacle['rect']) for obstacle in obstacles):
-            screen.fill(blue)
+            screen.blit(background_image, (0, 0))
             game_over.play()
             text = font50.render("GAME OVER", True, red)
             screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
@@ -129,7 +131,7 @@ def main():
 
         if top_safe_area.contains(player):
             pygame.time.wait(500)  
-            screen.fill(blue) 
+            screen.blit(background_image, (0, 0))
             win_fx.play() 
             text = font50.render("YOU WIN!", True, white) 
             screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))

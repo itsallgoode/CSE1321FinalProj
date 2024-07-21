@@ -25,7 +25,7 @@ clock = pygame.time.Clock()
 fps = 60
 font30 = pygame.font.SysFont('Constantia', 30)
 font40 = pygame.font.SysFont('Constantia', 40)
-font50 = pygame.font.SysFont('Constantia', 50)
+font50 = pygame.font.SysFont('Constantia', 70)
 
 #Dimentions
 player_size = 40
@@ -99,6 +99,8 @@ plants = pygame.image.load('images/plants.png').convert_alpha()
 plants = pygame.transform.scale(plants, (50, 30))
 tall_tree = pygame.image.load('images/tall_tree.png').convert_alpha()
 tall_tree = pygame.transform.scale(tall_tree, (80, 100))
+background_image = pygame.image.load('images/blue_bg.webp')
+background_image = pygame.transform.scale(background_image, (width, height))
 
 #car list
 vehicles = [green_car, blue_car, red_car, grey_car, yellow_car, siren_car, cop_car, pink_car, red_truck, jeep_car]
@@ -233,7 +235,7 @@ while running:
     # Lose Functions
     timer -= 1 / 60
     if timer <= 0:
-        screen.fill(black)
+        screen.blit(background_image, (0, 0))
         game_over.play()
         text = font50.render("GAME OVER", True, red)
         screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
@@ -250,7 +252,7 @@ while running:
     fps = clock.get_fps()
 
     if any(player.colliderect(obstacle) for obstacle in obstacles_left) or any(player.colliderect(obstacle) for obstacle in obstacles_right):
-        screen.fill(black)
+        screen.blit(background_image, (0, 0))
         channel.play(game_over)
         text = font50.render("GAME OVER", True, (red))
         screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
@@ -260,7 +262,7 @@ while running:
 
         # Win function
         if player.colliderect(top_safe_area):
-            screen.fill(blue)
+            screen.blit(background_image, (0, 0))
             channel.play(win)
             text = font50.render("You Win!", True, (white))
             screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
