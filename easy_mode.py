@@ -1,12 +1,11 @@
 import pygame
-from pygame.locals import *
 import random
 import sys
-import loading_screen
-#from pygame import mixer
-def main():
-    pygame.init()
+import os
+pygame.init()
+from pygame import mixer
 
+def main():
     width, height = 1000, 750
     screen = pygame.display.set_mode((width, height))
     pygame.display.set_caption('The Crossing')
@@ -17,7 +16,6 @@ def main():
     blue = (0, 0, 255)
     blue_menu = (41, 86, 143)
     green = (0, 255, 0)
-    gray = (200, 200, 200)
     black = (0, 0, 0)
     yellow = (255, 189, 25)
 
@@ -34,7 +32,7 @@ def main():
     #fonts
     font30 = pygame.font.SysFont('gillsansultracondensed', 30)
     font40 = pygame.font.SysFont('Constantia', 40)
-    font50 = pygame.font.SysFont('Constantia', 50)
+    font50 = pygame.font.SysFont('Constantia', 70)
     font = pygame.font.SysFont('gillsansultracondensed', 40)
 
     #time
@@ -42,13 +40,12 @@ def main():
     fps = 60
     countdown = 3
     last_count = pygame.time.get_ticks()
-    timer = 30
+    timer = 15
 
     #endges/safety
     top_safe_area = pygame.Rect(0, 0, width, safe_area_height)
-    bottom_safe_area = pygame.Rect(0, 90 - safe_area_height, width, safe_area_height)
-    middle_area = pygame.Rect(0, safe_area_height, width, middle_height)
 
+    #buttons
     return_button = pygame.Rect(width - 150, 5, 120, 40)
     return_text = font30.render("RETURN", True, white)
 
@@ -66,7 +63,6 @@ def main():
     playerBack_img = pygame.transform.scale(playerBack_img, (35, 35))
     surf_player = playerReady_img
 
-
     #background images
     water_img = pygame.image.load("images/Water.png").convert_alpha()
     water_img = pygame.transform.scale(water_img, (width, height))
@@ -78,6 +74,8 @@ def main():
     palmtree_img = pygame.transform.scale(palmtree_img, (50, 50))
     dock_img = pygame.image.load('images/dock.png')
     dockFlip_img = pygame.image.load('images/Dockflip.png')
+    background_image = pygame.image.load('images/blue_bg.webp')
+    background_image = pygame.transform.scale(background_image, (width, height))
 
     #object images
     barrel_img = pygame.image.load('images/barrel.png').convert_alpha()
@@ -107,20 +105,19 @@ def main():
     player_start_x = width // 2 - player_size // 2
     player_start_y = height - safe_area_height + (safe_area_height - 30 - player_size) // 2
     player = pygame.Rect(player_start_x, player_start_y, player_size, player_size)
-    player_surf = pygame.Surface((30, 100))
 
-
-    #creats text
-    def draw_text(text, font, text_col, x, y):
-        img = font.render(text, True, text_col)
-        screen.blit(img, (x, y))
-
+    #list and variables
+    game_end = 0
     obstacles = []
     obstacle_images = []
     obstacles_right = []
     obstacles_left = []
-    objects = [wood_img, barrel_img, ship1_img, buoy_img, ship2_img, red_boat_img, orange_boat_img, ship2_img, ship1_img]
-
+    objects = [wood_img, barrel_img, ship1_img, buoy_img, ship2_img, red_boat_img, orange_boat_img, ship2_img,
+               ship1_img]
+    #creats text
+    def draw_text(text, font, text_col, x, y):
+        img = font.render(text, True, text_col)
+        screen.blit(img, (x, y))
 
     # randomly selects a lane and calculates the position for a new obstacle
     def add_obstacle():
@@ -133,47 +130,44 @@ def main():
             obstacles_left.append(new_obstacle)
             obstacle_images.append(random.choice(objects))
 
-
     running = True
     while running:
         screen.fill(white)
         screen.blit(water_img, (0, 0))
-        player_surf = playerReady_img
         time = clock.tick() / 100
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                screen.blit(background_image, (0, 0))
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if return_button.collidepoint(event.pos):
+                    screen.blit(background_image, (0, 0))
                     pygame.quit()
                     os.system("python loading_screen.py")
                     sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    screen.blit(background_image, (0, 0))
                     pygame.quit()
                     sys.exit()
+        if game_end == 1:  # this allows it to go to main screen when you lose or win
+            pygame.quit()
+            os.system("python loading_screen.py")
 
-        if countdown > 3:
-            draw_text("Use the arrow keypad to reach the rabbit hole", font50, black, int(5), int(height / 2 - 20))
-            count_timer = pygame.time.get_ticks()
-            if count_timer - last_count > 1000:
-                countdown -= 1
-                last_count = count_timer
         #once count reaches 0 things inside will start
         if countdown == 0:
-            time_now = pygame.time.get_ticks()
-            player_surf = playerSwim_img
+            pygame.time.get_ticks()
 
             #win collision
             if player.colliderect(top_safe_area):
-                screen.fill(blue)  # "Enter game_over surface"
+                screen.blit(background_image, (0, 0))  # "Enter game_over surface"
                 win_fx.play()
-                text = font50.render("YOU WIN!", True, yellow)
+                text = font50.render("YOU WIN!", True, white)
                 screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
                 pygame.display.flip()
                 pygame.time.wait(3000)
-                running = False
+                game_end = 1  # added this to go to the menu screen instead of exiting out
 
             #obstacle direction/random
             if random.randint(0, 100) > 95:  # lower number to increase the chance of adding an obstacle
@@ -210,27 +204,27 @@ def main():
                 player.y += 5
                 surf_player = playerBack_img
 
+                # collision
+            if any(player.colliderect(obstacle) for obstacle in obstacles_left) or any(
+                    player.colliderect(obstacle) for obstacle in obstacles_right):
+                screen.blit(background_image, (0, 0))
+                game_over.play()
+                text = font50.render("GAME OVER", True, red)
+                screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
+                pygame.display.flip()
+                pygame.time.wait(3000) # kills the game if you hit an obstacle
+                game_end = 1 # added this to go to the menu screen instead of exiting out
+
             #if times runs out they lose
             timer -= 1 / 60
             if timer <= 0:
-                screen.fill(black)
+                screen.blit(background_image, (0, 0))
                 game_over.play()
                 text = font50.render("GAME OVER", True, red)
                 screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
                 pygame.display.flip()
                 pygame.time.wait(3000)
-                running = False  # kills the game if you hit an obstacle
-
-            #collision
-            if any(player.colliderect(obstacle) for obstacle in obstacles_left) or any(
-                    player.colliderect(obstacle) for obstacle in obstacles_right):
-                screen.fill(black)
-                game_over.play()
-                text = font50.render("GAME OVER", True, red)
-                screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
-                pygame.display.flip()
-                pygame.time.wait(3000)
-                running = False  # kills the game if you hit an obstacle
+                game_end = 1  # kills the game if you hit an obstacle
 
         #starts the count down
         if countdown > 0:
@@ -275,5 +269,7 @@ def main():
 
     pygame.quit()
     return
+
+
 if __name__ == "__main__":
     main()
