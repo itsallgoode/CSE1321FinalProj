@@ -49,6 +49,9 @@ def main():
     bottom_safe_area = pygame.Rect(0, 90 - safe_area_height, width, safe_area_height)
     middle_area = pygame.Rect(0, safe_area_height, width, middle_height)
 
+    return_button = pygame.Rect(width - 150, 5, 120, 40)
+    return_text = font30.render("RETURN", True, white)
+
     #Images
     #character images
     playerReady_img = pygame.image.load("images/swimmerready.png").convert_alpha()
@@ -141,6 +144,11 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if return_button.collidepoint(event.pos):
+                    pygame.quit()
+                    os.system("python loading_screen.py")
+                    sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     pygame.quit()
@@ -241,6 +249,8 @@ def main():
         screen.blit(palmtree_img, (430, 0))
         screen.blit(palmtree_img, (750, 0))
         screen.blit(palmtree_img, (130, 15))
+        pygame.draw.rect(screen, green, return_button, 2)
+        screen.blit(return_text, (return_button.x + 9, return_button.y))
         #bottom blit
         screen.blit(sandBottom_img, (0, 680))
         screen.blit(dockFlip_img, (470, 650))
