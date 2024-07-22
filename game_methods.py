@@ -225,7 +225,7 @@ def easy():
         #starts the count down
         if countdown > 0:
             draw_text("Use ARROWS to get to the other side", font, blue_menu, width / 2 - 300, height - 450)
-            draw_text("before the Time runs out.", font, blue_menu, width / 2 - 220, height - 410)
+            draw_text("before the time runs out.", font, blue_menu, width / 2 - 220, height - 410)
             draw_text("GET READY!", font40, white, int(width / 2 - 110), int(height / 2 + 50))
             draw_text(str(countdown), font40, white, int(width / 2 - 10), int(height / 2 + 100))
             count_timer = pygame.time.get_ticks()
