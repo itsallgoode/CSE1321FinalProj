@@ -290,6 +290,7 @@ def medium():
     font30 = pygame.font.SysFont('Constantia', 30)
     font40 = pygame.font.SysFont('Constantia', 40)
     font50 = pygame.font.SysFont('Constantia', 50)
+    font70 = pygame.font.SysFont('Constantia', 70)
 
     # Dimentions
     player_size = 40
@@ -506,7 +507,7 @@ def medium():
         if timer <= 0:
             screen.blit(background_image, (0, 0))
             game_over.play()
-            text = font50.render("GAME OVER", True, red)
+            text = font70.render("GAME OVER", True, red)
             screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
             pygame.display.flip()
             pygame.time.wait(3000)
@@ -524,7 +525,7 @@ def medium():
                 player.colliderect(obstacle) for obstacle in obstacles_right):
             screen.blit(background_image, (0, 0))
             game_over.play()
-            text = font50.render("GAME OVER", True, (red))
+            text = font70.render("GAME OVER", True, (red))
             screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
             pygame.display.flip()
             pygame.time.wait(3000)
@@ -534,7 +535,7 @@ def medium():
         if player.colliderect(top_safe_area):
             screen.blit(background_image, (0, 0))
             win_fx.play()
-            text = font50.render("You Win!", True, (white))
+            text = font70.render("You Win!", True, (white))
             screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
             pygame.display.flip()
             pygame.time.wait(3000)
