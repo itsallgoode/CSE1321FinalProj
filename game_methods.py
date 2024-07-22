@@ -560,7 +560,7 @@ def hard():
     middle_height = height - 2 * safe_area_height
     lanes = 6
     lane_height = middle_height // lanes
-
+    font40 = pygame.font.SysFont('Constantia', 40)
     font50 = pygame.font.SysFont('Constantia', 70)
     font30 = pygame.font.SysFont('Constantia', 30)
     timer = 15
@@ -702,7 +702,7 @@ def hard():
             if seconds >= countdown:
                 game_state = 'playing'
             else:
-                instruction_text = font50.render("Get to the cat bed without being ran over", True, black)
+                instruction_text = font40.render("Get to the cat bed without being ran over", True, black)
                 screen.blit(instruction_text, (width / 2 - instruction_text.get_width() / 2, height / 2 - 100))
                 countdown_text = font50.render(f"Get ready! {countdown - int(seconds)}", True, red)
                 screen.blit(countdown_text, (width / 2 - countdown_text.get_width() / 2, height / 2))
