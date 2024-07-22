@@ -316,7 +316,11 @@ def medium():
     pygame.mixer.music.load('music/music.wav')
     pygame.mixer.music.play(-1, 0.0, 5000)
     game_over = pygame.mixer.Sound('music/game_over.wav')
-    win = pygame.mixer.Sound('music/win.mp3')
+    game_over.set_volume(0.5)
+    win_fx = pygame.mixer.Sound('music/win.mp3')
+    win_fx.set_volume(0.5)
+    background_image = pygame.image.load('images/blue_bg.webp')
+    background_image = pygame.transform.scale(background_image, (width, height))
 
     # images
     game_image = pygame.image.load('images/interstate.png').convert_alpha()
@@ -499,7 +503,7 @@ def medium():
         # Lose Functions
         timer -= 1 / 60
         if timer <= 0:
-            screen.fill(black)
+            screen.blit(background_image, (0, 0))
             game_over.play()
             text = font50.render("GAME OVER", True, red)
             screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
@@ -517,8 +521,8 @@ def medium():
 
         if any(player.colliderect(obstacle) for obstacle in obstacles_left) or any(
                 player.colliderect(obstacle) for obstacle in obstacles_right):
-            screen.fill(black)
-            channel.play(game_over)
+            screen.blit(background_image, (0, 0))
+            game_over.play()
             text = font50.render("GAME OVER", True, (red))
             screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
             pygame.display.flip()
@@ -527,8 +531,8 @@ def medium():
 
         # Win function
         if player.colliderect(top_safe_area):
-            screen.fill(blue)
-            channel.play(win)
+            screen.blit(background_image, (0, 0))
+            win_fx.play()
             text = font50.render("You Win!", True, (white))
             screen.blit(text, (width / 2 - text.get_width() / 2, height / 2 - text.get_height() / 2))
             pygame.display.flip()
