@@ -266,7 +266,9 @@ def main():
             pygame.display.flip()
             pygame.time.wait(3000)
             running = False
-
+            pygame.quit()
+            os.system("python loading_screen.py")
+            sys.exit()
         # Win function
         if player.colliderect(top_safe_area):
             screen.fill(blue)
@@ -281,6 +283,8 @@ def main():
         clock.tick(60)
 
     pygame.quit()
-    return
+    sys.exit()
+
+
 if __name__ == "__main__":
     main() 
