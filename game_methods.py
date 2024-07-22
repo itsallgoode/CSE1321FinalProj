@@ -144,6 +144,7 @@ def easy():
                 main_screen.main()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if return_button.collidepoint(event.pos):
+                    pygame.mixer.music.stop()
                     screen.blit(background_image, (0, 0))
                     main_screen.main()
             elif event.type == pygame.KEYDOWN:
@@ -417,6 +418,7 @@ def medium():
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if return_button.collidepoint(event.pos):
+                    pygame.mixer.music.stop()
                     main_screen.main()
             elif event.type == pygame.KEYDOWN:
                 if countdown <= 0:
@@ -623,6 +625,7 @@ def hard():
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if return_button.collidepoint(event.pos):
+                    pygame.mixer.music.stop()
                     main_screen.main()
         keys = pygame.key.get_pressed()
         if game_state == 'playing':
@@ -703,6 +706,4 @@ def hard():
     main_screen.main()
 
 
-if __name__ == "__main__":
-    main()
 
