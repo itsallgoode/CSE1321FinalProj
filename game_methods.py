@@ -200,6 +200,7 @@ def easy():
                 pygame.display.flip()
                 pygame.time.wait(3000)
                 game_end = 1  # kills the game if you hit an obstacle
+
         # obstacle direction/random
         if random.randint(0, 100) > 96:  # lower number to increase the chance of adding an obstacle
             add_obstacle()
@@ -225,6 +226,7 @@ def easy():
             screen.blit(image, obstacle)
         for obstacle, image in zip(obstacles_right, obstacle_images):
             screen.blit(image, obstacle)
+
         #starts the count down
         if countdown > 0:
             draw_text("Use ARROWS to get to the other side", font, blue_menu, width / 2 - 300, height - 450)
@@ -254,8 +256,9 @@ def easy():
         #player blit
         screen.blit(surf_player, player)
         #timer blit
-        text = font30.render(f"Time: {int(timer)}", True, (255, 255, 255))
-        screen.blit(text, (20, 20))
+        if countdown == 0:
+            text = font30.render(f"Time: {int(timer)}", True, (255, 255, 255))
+            screen.blit(text, (20, 20))
 
         pygame.display.flip()
         clock.tick(60)
@@ -715,6 +718,3 @@ def hard():
         clock.tick(60)
 
     main_screen.main()
-
-
-
