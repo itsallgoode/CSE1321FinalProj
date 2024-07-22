@@ -169,12 +169,6 @@ def easy():
                 game_end = 1  # added this to go to the menu screen instead of exiting out
 
             keys = pygame.key.get_pressed()
-            if keys[pygame.K_LEFT] and player.left > 0:
-                player.x -= 5
-                surf_player = playerLeft_img
-            if keys[pygame.K_RIGHT] and player.right < width:
-                player.x += 5
-                surf_player = playerRight_img
             if keys[pygame.K_UP] and player.top > 0:
                 player.y -= 5
                 surf_player = playerSwim_img
@@ -420,15 +414,10 @@ def medium():
                 if return_button.collidepoint(event.pos):
                     pygame.mixer.music.stop()
                     main_screen.main()
+                    break
             elif event.type == pygame.KEYDOWN:
                 if countdown <= 0:
-                    if event.key == pygame.K_LEFT and player.left > 0:
-                        player.x -= player_size
-                        player_bunny = bunny_left
-                    elif event.key == pygame.K_RIGHT and player.right < width:
-                        player.x += player_size
-                        player_bunny = bunny_right
-                    elif event.key == pygame.K_UP and player.top > 0:
+                    if event.key == pygame.K_UP and player.top > 0:
                         player.y -= player_size
                         player_bunny = bunny_ready
                     elif event.key == pygame.K_DOWN and player.bottom < height:
@@ -627,12 +616,9 @@ def hard():
                 if return_button.collidepoint(event.pos):
                     pygame.mixer.music.stop()
                     main_screen.main()
+                    break
         keys = pygame.key.get_pressed()
         if game_state == 'playing':
-            if keys[pygame.K_LEFT] and player.left > 0:
-                player.x -= 5
-            if keys[pygame.K_RIGHT] and player.right < width:
-                player.x += 5
             if keys[pygame.K_UP] and player.top > 0:
                 player.y -= 5
             if keys[pygame.K_DOWN] and player.bottom < height:
