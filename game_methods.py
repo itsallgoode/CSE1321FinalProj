@@ -43,7 +43,7 @@ def easy():
     fps = 60
     countdown = 3
     last_count = pygame.time.get_ticks()
-    timer = 15
+    timer = 45
 
     #endges/safety
     top_safe_area = pygame.Rect(0, 0, width, safe_area_height)
@@ -203,7 +203,7 @@ def easy():
                 pygame.time.wait(3000)
                 game_end = 1  # kills the game if you hit an obstacle
         # obstacle direction/random
-        if random.randint(0, 100) > 95:  # lower number to increase the chance of adding an obstacle
+        if random.randint(0, 100) > 96:  # lower number to increase the chance of adding an obstacle
             add_obstacle()
 
         for obstacle in obstacles:
@@ -299,7 +299,7 @@ def medium():
     middle_height = height - 2 * safe_area_height
     lanes = 3
     lane_height = 65
-    cars = 96  # (0-100)lower number to increase the chance of adding an obstacle
+    cars = 95  # (0-100)lower number to increase the chance of adding an obstacle
     top_safe_area = pygame.Rect(width / 2 - 50, 0, 100, safe_area_height - 50)
 
     return_button = pygame.Rect(width - 150, 5, 120, 40)
@@ -657,7 +657,7 @@ def hard():
             pygame.time.wait(3000)
             running = False
 
-        if random.randint(0, 100) > 95:
+        if random.randint(0, 100) > 94:
             add_obstacle()
 
         for obstacle in obstacles:
