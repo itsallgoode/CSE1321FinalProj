@@ -21,7 +21,7 @@ def main():
     middle_height = height - 2 * safe_area_height
     lanes = 6
     lane_height = middle_height // lanes
-
+    font40 = pygame.font.SysFont('Constantia', 40)
     font50 = pygame.font.SysFont('Constantia', 70)
     font30 = pygame.font.SysFont('Constantia', 30)
     timer = 15
@@ -86,6 +86,11 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                return
+            elif event.type == pygame.KEYDOWN:
+                if event.type == pygame.K_ESCAPE:
+                    running = False
+                    return
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if return_button.collidepoint(event.pos):
                     pygame.quit()
@@ -128,7 +133,9 @@ def main():
             pygame.display.flip()
             pygame.time.wait(3000)
             running = False
-
+            pygame.quit()
+            os.system("python loading_screen.py")
+            sys.exit()
         if top_safe_area.contains(player):
             pygame.time.wait(500)  
             screen.blit(background_image, (0, 0))
@@ -138,7 +145,9 @@ def main():
             pygame.display.flip()
             pygame.time.wait(3000)  
             running = False
-
+            pygame.quit()
+            os.system("python loading_screen.py")
+            sys.exit()
         screen.blit(top_image, (0, 0))
         screen.blit(bottom_image, (0, height - safe_area_height))
         for i in range(lanes):
@@ -157,7 +166,7 @@ def main():
             if seconds >= countdown:
                 game_state = 'playing'
             else:
-                instruction_text = font50.render("Get to the cat bed without being ran over", True, black)
+                instruction_text = font40.render("Get to the cat bed without being ran over", True, black)
                 screen.blit(instruction_text, (width / 2 - instruction_text.get_width() / 2, height / 2 - 100))
                 countdown_text = font50.render(f"Get ready! {countdown - int(seconds)}", True, red)
                 screen.blit(countdown_text, (width / 2 - countdown_text.get_width() / 2, height / 2))
@@ -169,7 +178,8 @@ def main():
         clock.tick(60)
 
     pygame.quit()
-    return
+    sys.exit()
 
 if __name__ == "__main__":
     main()
+
