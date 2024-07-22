@@ -141,22 +141,17 @@ def easy():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 screen.blit(background_image, (0, 0))
-                pygame.quit()
-                sys.exit()
+                main_screen.main()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if return_button.collidepoint(event.pos):
                     screen.blit(background_image, (0, 0))
-                    pygame.quit()
-                    os.system("python main_screen.py")
-                    sys.exit()
+                    main_screen.main()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     screen.blit(background_image, (0, 0))
-                    pygame.quit()
-                    sys.exit()
+                    main_screen.main()
         if game_end == 1:  # this allows it to go to main screen when you lose or win
-            pygame.quit()
-            os.system("python main_screen.py")
+            main_screen.main()
 
         #once count reaches 0 things inside will start
         if countdown == 0:
@@ -422,9 +417,7 @@ def medium():
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if return_button.collidepoint(event.pos):
-                    pygame.quit()
-                    os.system("python main_screen.py")
-                    sys.exit()
+                    main_screen.main()
             elif event.type == pygame.KEYDOWN:
                 if countdown <= 0:
                     if event.key == pygame.K_LEFT and player.left > 0:
@@ -630,9 +623,7 @@ def hard():
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if return_button.collidepoint(event.pos):
-                    pygame.quit()
-                    os.system("python main_screen.py")
-                    sys.exit()
+                    main_screen.main()
         keys = pygame.key.get_pressed()
         if game_state == 'playing':
             if keys[pygame.K_LEFT] and player.left > 0:
