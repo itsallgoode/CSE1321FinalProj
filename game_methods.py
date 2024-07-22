@@ -141,16 +141,21 @@ def easy():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 screen.blit(background_image, (0, 0))
+                pygame.mixer.music.stop()
                 main_screen.main()
+                break
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if return_button.collidepoint(event.pos):
                     pygame.mixer.music.stop()
                     screen.blit(background_image, (0, 0))
                     main_screen.main()
+                    break
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     screen.blit(background_image, (0, 0))
+                    pygame.mixer.music.stop()
                     main_screen.main()
+                    break
         if game_end == 1:  # this allows it to go to main screen when you lose or win
             main_screen.main()
 
@@ -225,7 +230,7 @@ def easy():
         #starts the count down
         if countdown > 0:
             draw_text("Use ARROWS to get to the other side", font, blue_menu, width / 2 - 300, height - 450)
-            draw_text("before the time runs out.", font, blue_menu, width / 2 - 220, height - 410)
+            draw_text("before the Time runs out.", font, blue_menu, width / 2 - 220, height - 410)
             draw_text("GET READY!", font40, white, int(width / 2 - 110), int(height / 2 + 50))
             draw_text(str(countdown), font40, white, int(width / 2 - 10), int(height / 2 + 100))
             count_timer = pygame.time.get_ticks()
@@ -307,8 +312,9 @@ def medium():
     player_bunny = pygame.Surface((player_size, player_size))
 
     # music
-    background_music = pygame.mixer.Sound('music/music.wav')
-    channel = pygame.mixer.Channel(0)
+
+    pygame.mixer.music.load('music/music.wav')
+    pygame.mixer.music.play(-1, 0.0, 5000)
     game_over = pygame.mixer.Sound('music/game_over.wav')
     win = pygame.mixer.Sound('music/win.mp3')
 
@@ -376,7 +382,6 @@ def medium():
     obstacles_left = []
 
     clock = pygame.time.Clock()
-    channel.play(background_music)
 
     # methods
     def draw_text(text, font, text_col, x, y):
@@ -410,12 +415,17 @@ def medium():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if return_button.collidepoint(event.pos):
                     pygame.mixer.music.stop()
                     main_screen.main()
                     break
             elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.mixer.music.stop()
+                    main_screen.main()
+                    break
                 if countdown <= 0:
                     if event.key == pygame.K_UP and player.top > 0:
                         player.y -= player_size
@@ -423,8 +433,7 @@ def medium():
                     elif event.key == pygame.K_DOWN and player.bottom < height:
                         player.y += player_size
                         player_bunny = bunny_down
-                    if event.key == pygame.K_ESCAPE:
-                        sys.exit()
+
 
         # directions and countdown settings
         if countdown == 0:
@@ -612,17 +621,27 @@ def hard():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+                pygame.mixer.music.stop()
+                main_screen.main()
+                break
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if return_button.collidepoint(event.pos):
                     pygame.mixer.music.stop()
                     main_screen.main()
                     break
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.mixer.music.stop()
+                    main_screen.main()
+                    break
+
         keys = pygame.key.get_pressed()
         if game_state == 'playing':
             if keys[pygame.K_UP] and player.top > 0:
                 player.y -= 5
             if keys[pygame.K_DOWN] and player.bottom < height:
                 player.y += 5
+
 
         timer -= 1 / 60
         if timer <= 0:
