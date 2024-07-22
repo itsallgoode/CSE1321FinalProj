@@ -269,8 +269,7 @@ def easy():
         previous_time = clock.get_time()
         fps = clock.get_fps()
 
-    pygame.quit()
-    return
+    main_screen.main()
 
 def medium():
     pygame.init()
@@ -419,7 +418,6 @@ def medium():
         screen.blit(game_image, (0, 0))
         time = clock.tick() / 100
         for event in pygame.event.get():
-
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
@@ -546,11 +544,7 @@ def medium():
 
         pygame.display.flip()
         clock.tick(60)
-
-    pygame.quit()
-    return
-
-
+    main_screen.main()
 
 def hard():
     pygame.init()
@@ -715,8 +709,7 @@ def hard():
         pygame.display.flip()
         clock.tick(60)
 
-    pygame.quit()
-    return
+    main_screen.main()
 
 
 if __name__ == "__main__":
