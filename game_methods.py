@@ -692,8 +692,8 @@ def hard():
         for obstacle in obstacles:
             screen.blit(obstacle['image'], obstacle['rect'].topleft)
 
-        text = font50.render(f"Time: {int(timer)}", True, white)
-        screen.blit(text, (10, 10))
+
+
         screen.blit(player_image, player.topleft)
         screen.blit(cat_bed, (top_center_x, top_center_y))
 
@@ -701,12 +701,16 @@ def hard():
             seconds = (pygame.time.get_ticks() - start_ticks) / 1000
             if seconds >= countdown:
                 game_state = 'playing'
+                timer = 15
+
             else:
                 instruction_text = font40.render("Get to the cat bed without being ran over", True, black)
                 screen.blit(instruction_text, (width / 2 - instruction_text.get_width() / 2, height / 2 - 100))
                 countdown_text = font50.render(f"Get ready! {countdown - int(seconds)}", True, red)
                 screen.blit(countdown_text, (width / 2 - countdown_text.get_width() / 2, height / 2))
-
+        if game_state == 'playing':
+            text = font50.render(f"Time: {int(timer)}", True, white)
+            screen.blit(text, (10, 10))
         pygame.draw.rect(screen, black, return_button)
         screen.blit(return_text, (return_button.x + 10, return_button.y + 10))
         pygame.display.flip()
